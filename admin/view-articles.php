@@ -55,7 +55,7 @@ include('includes/navigation.php');
                                     <td>Yes/No</td>
                                     <td><?php echo $post['updated']; ?></td>
                                     <td><?php echo $post['status']; ?></td>
-                                    <td><a href="edit-article.php?id=<?php echo $post['id']; ?>">Edit</a> | <a href="delete-article.php?id=<?php echo $post['id']; ?>">Delete</a></td>
+                                    <td><a href="edit-article.php?id=<?php echo $post['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $post['id']; ?>&item=article">Delete</a></td>
                                 </tr>
                                 <?php } ?>
                                 

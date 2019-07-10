@@ -44,7 +44,7 @@ include('includes/navigation.php');
                                     <td><?php echo $cat['title']; ?></td>
                                     <td><?php echo $cat['slug']; ?></td>
                                     <td><?php echo $cat['updated']; ?></td>
-                                    <td><a href="edit-category.php?id=<?php echo $cat['id']; ?>">Edit</a> | <a href="delete-category.php?id=<?php echo $cat['id']; ?>">Delete</a></td>
+                                    <td><a href="edit-category.php?id=<?php echo $cat['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $cat['id']; ?>&item=category">Delete</a></td>
                                 </tr>
                                 <?php } ?>
                             </tbody>
