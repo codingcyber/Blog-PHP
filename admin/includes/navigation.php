@@ -23,7 +23,7 @@
                 <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                 </li>
                 <li class="divider"></li>
-                <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                <li><a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                 </li>
             </ul>
             <!-- /.dropdown-user -->
@@ -47,16 +47,16 @@
                     <!-- /input-group -->
                 </li>
                 <li>
-                    <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    <a href="dashboard.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Categories<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="#">Add Category</a>
+                            <a href="add-category.php">Add Category</a>
                         </li>
                         <li>
-                            <a href="#">View Categories</a>
+                            <a href="view-categories.php">View Categories</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
@@ -65,10 +65,10 @@
                     <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Articles<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="#">Add Articles</a>
+                            <a href="add-article.php">Add Articles</a>
                         </li>
                         <li>
-                            <a href="#">View Articles</a>
+                            <a href="view-articles.php">View Articles</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
@@ -80,13 +80,25 @@
                     <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Users<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="#">Add User</a>
+                            <a href="add-user.php">Add User</a>
                         </li>
                         <li>
-                            <a href="#">View Users</a>
+                            <a href="view-users.php">View Users</a>
                         </li>
                         <li>
-                            <a href="#">My Profile</a>
+                            <a href="profile.php">My Profile</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Widgets<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="add-widget.php">Add Widget</a>
+                        </li>
+                        <li>
+                            <a href="view-widgets.php">View Widgets</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
@@ -95,7 +107,7 @@
                     <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Settings<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="#">Site Settings</a>
+                            <a href="settings.php">Site Settings</a>
                         </li>
                         <li>
                             <a href="#">General Articles</a>
