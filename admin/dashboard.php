@@ -1,5 +1,8 @@
-<?php include('includes/header.php'); ?>
-<?php include('includes/navigation.php'); ?>
+<?php 
+include('includes/check-login.php');
+include('includes/header.php');
+include('includes/navigation.php');  
+?>
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
