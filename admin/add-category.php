@@ -90,15 +90,15 @@ include('includes/navigation.php');
                                 <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
                                 <div class="form-group">
                                     <label>Category Title</label>
-                                    <input class="form-control" name="title" placeholder="Enter Article Title">
+                                    <input class="form-control" name="title" placeholder="Enter Article Title" value="<?php if(isset($_POST['title'])){ echo $_POST['title'];} ?>">
                                 </div>
                                 <div class="form-group">
                                     <label>Category Description</label>
-                                    <textarea class="form-control" name="description" rows="3"></textarea>
+                                    <textarea class="form-control" name="description" rows="3"><?php if(isset($_POST['description'])){ echo $_POST['description'];} ?></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Category Slug</label>
-                                    <input class="form-control" name="slug" placeholder="Enter Category Slug Here">
+                                    <input class="form-control" name="slug" placeholder="Enter Category Slug Here" value="<?php if(isset($_POST['slug'])){ echo $_POST['slug'];} ?>">
                                 </div>
 
                                 <input type="submit" class="btn btn-success" value="Submit" />
