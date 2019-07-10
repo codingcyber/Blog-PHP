@@ -30,6 +30,7 @@ if(isset($_POST) & !empty($_POST)){
         unset($_SESSION['csrf_token_time']);
     }
     if(empty($errors)){
+        // TODO : Upload Article Image
         $sql = "INSERT INTO posts (uid, title, content, status, slug) VALUES (:uid, :title, :content, :status, :slug)";
         $result = $db->prepare($sql);
         $values = array(':uid'      => $_SESSION['id'],
