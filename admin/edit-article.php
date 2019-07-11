@@ -31,6 +31,7 @@ if(isset($_POST) & !empty($_POST)){
     }
     if(empty($errors)){
         // TODO : Upload Article Image
+        // TODO : Only user with Administrator privillages or user who created the article can only edit 
         $sql = "UPDATE posts SET title=:title, content=:content, status=:status, slug=:slug, updated=NOW() WHERE id=:id";
         $result = $db->prepare($sql);
         $values = array(':title'    => $_POST['title'],
@@ -41,7 +42,7 @@ if(isset($_POST) & !empty($_POST)){
                         );
         $res = $result->execute($values) or die(print_r($result->errorInfo(), true));
         if($res){
-            // After inserting the article, insert category id and article id into post_categories table
+            // TODO : check post id and category id in post_categories table, then only create or update records
             $pid = $db->lastInsertID();
             foreach ($_POST['categories'] as $category) {
             $sql = "INSERT INTO post_categories (pid, cid) VALUES (:pid, :cid)";
@@ -125,8 +126,7 @@ $post = $result->fetch(PDO::FETCH_ASSOC);
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <?php 
-                                                // TODO : Select the Category After Failed Submission
-                                            // Fetch categories from categories table
+                                                // TODO : Select Existing Categories from Database Values
                                             $sql = "SELECT * FROM categories";
                                             $result = $db->prepare($sql);
                                             $result->execute();
