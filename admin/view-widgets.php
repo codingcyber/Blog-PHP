@@ -1,5 +1,9 @@
-<?php include('includes/header.php'); ?>
-<?php include('includes/navigation.php'); ?>
+<?php 
+include('includes/check-login.php');
+require_once('../includes/connect.php');
+include('includes/header.php'); 
+include('includes/navigation.php');  
+?>
 <div id="page-wrapper" style="min-height: 345px;">
     <div class="row">
         <div class="col-lg-12">
@@ -22,33 +26,29 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Title</th>
+                                    <th>Type</th>
                                     <th>Order</th>
-                                    <th>Author</th>
                                     <th>Date</th>
+                                    <th>Operations</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php 
+                                    $sql = "SELECT * FROM widget";
+                                    $result = $db->prepare($sql);
+                                    $result->execute();
+                                    $res = $result->fetchAll(PDO::FETCH_ASSOC);
+                                    foreach ($res as $widget) {
+                                ?>
                                 <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
+                                    <td><?php echo $widget['id']; ?></td>
+                                    <td><?php echo $widget['title']; ?></td>
+                                    <td><?php echo $widget['type']; ?></td>
+                                    <td><?php echo $widget['widget_order']; ?></td>
+                                    <td><?php echo $widget['updated']; ?></td>
+                                    <td><a href="edit-widget.php?id=<?php echo $widget['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $widget['id']; ?>">Delete</a></td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                    <td>@mdo</td>
-                                </tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
