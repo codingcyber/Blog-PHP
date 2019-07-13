@@ -1,5 +1,9 @@
-<?php include('includes/header.php'); ?>
-<?php include('includes/navigation.php'); ?>
+<?php 
+include('includes/check-login.php');
+require_once('../includes/connect.php');
+include('includes/header.php'); 
+include('includes/navigation.php');  
+?>
 <div id="page-wrapper" style="min-height: 345px;">
     <div class="row">
         <div class="col-lg-12">
@@ -26,33 +30,27 @@
                                     <th>E-Mail</th>
                                     <th>Role</th>
                                     <th>Articles</th>
+                                    <th>Operations</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php 
+                                    $sql = "SELECT * FROM users";
+                                    $result = $db->prepare($sql);
+                                    $result->execute();
+                                    $res = $result->fetchAll(PDO::FETCH_ASSOC);
+                                    foreach ($res as $user) {
+                                ?>
                                 <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
+                                    <td><?php echo $user['id']; ?></td>
+                                    <td><?php echo $user['username']; ?></td>
+                                    <td><?php echo $user['fname'] . " " . $user['lname']; ?></td>
+                                    <td><?php echo $user['email']; ?></td>
+                                    <td><?php echo $user['role']; ?></td>
+                                    <td>Number of Articles</td>
+                                    <td><a href="edit-user.php?id=<?php echo $user['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $user['id']; ?>">Delete</a></td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
-                                </tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
