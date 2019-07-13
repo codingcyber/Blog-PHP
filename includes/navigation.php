@@ -12,12 +12,17 @@
             <span class="sr-only">(current)</span>
           </a>
         </li>
+        <?php
+          $sql = "SELECT * FROM categories";
+          $result = $db->prepare($sql);
+          $result->execute();
+          $res = $result->fetchAll(PDO::FETCH_ASSOC);
+          foreach ($res as $cat) {
+        ?>
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+          <a class="nav-link" href="category.php?id=<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Services</a>
-        </li>
+        <?php } ?>
         <li class="nav-item">
           <a class="nav-link" href="#">Contact</a>
         </li>
