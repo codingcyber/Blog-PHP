@@ -53,7 +53,7 @@ include('includes/navigation.php');
                                     <td><?php echo $page['slug']; ?></td>
                                     <td><?php echo $page['updated']; ?></td>
                                     <td><?php echo $page['status']; ?></td>
-                                    <td><a href="edit-page.php?id=<?php echo $page['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $page['id']; ?>">Delete</a></td>
+                                    <td><a href="edit-page.php?id=<?php echo $page['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $page['id']; ?>&item=page">Delete</a></td>
                                 </tr>
                             <?php } ?>
                             </tbody>

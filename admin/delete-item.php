@@ -11,8 +11,12 @@ switch ($_GET['item']) {
 		$table = 'posts';
 		$redirect = 'view-articles.php';
 		break;
+	case 'page':
+		$table = 'pages';
+		$redirect = 'view-pages.php';
+		break;
 	default:
-		# code...
+		$redirect = 'dashboard.php';
 		break;
 }
 $DelSql = "DELETE FROM $table WHERE id=?";
@@ -22,5 +26,6 @@ if($res){
 	header("location: $redirect");
 }else{
 	echo "Failed to Delete Record";
+	header("location: $redirect");
 }
 ?>
