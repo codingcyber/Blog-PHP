@@ -33,7 +33,13 @@ $posts = $result->fetchAll(PDO::FETCH_ASSOC);
           </div>
           <div class="card-footer text-muted">
             Posted on <?php echo $post['created']; ?>
-            <a href="#">Start Bootstrap</a>
+            <?php
+            $usersql = "SELECT * FROM users WHERE id=?";
+            $userresult = $db->prepare($usersql);
+            $userresult->execute(array($post['uid']));
+            $user = $userresult->fetch(PDO::FETCH_ASSOC);
+          ?>
+          <a href="user-posts.php?id=<?php echo $user['id']; ?>"><?php if((isset($user['fname']) || isset($user['lname'])) & (!empty($user['fname']) || !empty($user['lname']))) {echo $user['fname'] . " " . $user['lname']; }else{echo $user['username']; } ?></a>
           </div>
         </div>
       <?php } ?>
