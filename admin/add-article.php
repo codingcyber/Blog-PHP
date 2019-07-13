@@ -53,7 +53,7 @@ if(isset($_POST) & !empty($_POST)){
             }
             header("location: view-articles.php");
         }else{
-            $errors[] = "Failed to Add Category";
+            $errors[] = "Failed to Add Article";
         }
     }
 }

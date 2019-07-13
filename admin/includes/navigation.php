@@ -74,6 +74,18 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Pages<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="add-page.php">Add Page</a>
+                        </li>
+                        <li>
+                            <a href="view-pages.php">View Pages</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
                     <a href="#"><i class="fa fa-table fa-fw"></i> Comments</a>
                 </li>
                 <li>

@@ -55,6 +55,7 @@ pages
 -content
 -status
 -slug
+-page_order
 -created
 -updated
 
