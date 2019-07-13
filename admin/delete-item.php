@@ -15,6 +15,10 @@ switch ($_GET['item']) {
 		$table = 'pages';
 		$redirect = 'view-pages.php';
 		break;
+	case 'user':
+		$table = 'users';
+		$redirect = 'view-users.php';
+		break;
 	default:
 		$redirect = 'dashboard.php';
 		break;

@@ -48,7 +48,7 @@ include('includes/navigation.php');
                                     <td><?php echo $user['email']; ?></td>
                                     <td><?php echo $user['role']; ?></td>
                                     <td>Number of Articles</td>
-                                    <td><a href="edit-user.php?id=<?php echo $user['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $user['id']; ?>">Delete</a></td>
+                                    <td><a href="edit-user.php?id=<?php echo $user['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $user['id']; ?>&item=user">Delete</a></td>
                                 </tr>
                                 <?php } ?>
                             </tbody>
