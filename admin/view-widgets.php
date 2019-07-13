@@ -46,7 +46,7 @@ include('includes/navigation.php');
                                     <td><?php echo $widget['type']; ?></td>
                                     <td><?php echo $widget['widget_order']; ?></td>
                                     <td><?php echo $widget['updated']; ?></td>
-                                    <td><a href="edit-widget.php?id=<?php echo $widget['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $widget['id']; ?>">Delete</a></td>
+                                    <td><a href="edit-widget.php?id=<?php echo $widget['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $widget['id']; ?>&item=widget">Delete</a></td>
                                 </tr>
                                 <?php } ?>
                             </tbody>
