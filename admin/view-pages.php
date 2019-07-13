@@ -1,5 +1,9 @@
-<?php include('includes/header.php'); ?>
-<?php include('includes/navigation.php'); ?>
+<?php 
+include('includes/check-login.php');
+require_once('../includes/connect.php');
+include('includes/header.php'); 
+include('includes/navigation.php');  
+?>
 <div id="page-wrapper" style="min-height: 345px;">
     <div class="row">
         <div class="col-lg-12">
@@ -24,35 +28,34 @@
                                     <th>Page Title</th>
                                     <th>Author</th>
                                     <th>Order</th>
+                                    <th>Slug</th>
                                     <th>Date</th>
                                     <th>Status</th>
+                                    <th>Operations</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php 
+                                    $sql = "SELECT * FROM pages";
+                                    $result = $db->prepare($sql);
+                                    $result->execute();
+                                    $res = $result->fetchAll(PDO::FETCH_ASSOC);
+                                    foreach ($res as $page) {
+                                    // TODO : Only user with administrator privillages or user who created the page can only edit or delete post
+
+                                    // TODO : Display Author Name
+                                ?>
                                 <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
+                                    <td><?php echo $page['id']; ?></td>
+                                    <td><?php echo $page['title']; ?></td>
+                                    <td><?php echo $page['uid']; ?></td>
+                                    <td><?php echo $page['page_order']; ?></td>
+                                    <td><?php echo $page['slug']; ?></td>
+                                    <td><?php echo $page['updated']; ?></td>
+                                    <td><?php echo $page['status']; ?></td>
+                                    <td><a href="edit-page.php?id=<?php echo $page['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $page['id']; ?>">Delete</a></td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
-                                </tr>
+                            <?php } ?>
                             </tbody>
                         </table>
                     </div>
