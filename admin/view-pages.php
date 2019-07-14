@@ -43,12 +43,15 @@ include('includes/navigation.php');
                                     foreach ($res as $page) {
                                     // TODO : Only user with administrator privillages or user who created the page can only edit or delete post
 
-                                    // TODO : Display Author Name
+                                        $usersql = "SELECT * FROM users WHERE id=?";
+                                        $userresult = $db->prepare($usersql);
+                                        $userresult->execute(array($page['uid']));
+                                        $user = $userresult->fetch(PDO::FETCH_ASSOC);
                                 ?>
                                 <tr>
                                     <td><?php echo $page['id']; ?></td>
                                     <td><?php echo $page['title']; ?></td>
-                                    <td><?php echo $page['uid']; ?></td>
+                                    <td><a href="edit-user.php?id=<?php echo $user['id']; ?>"><?php echo $user['username']; ?></a></td>
                                     <td><?php echo $page['page_order']; ?></td>
                                     <td><?php echo $page['slug']; ?></td>
                                     <td><?php echo $page['updated']; ?></td>
