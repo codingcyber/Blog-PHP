@@ -102,32 +102,29 @@ $widget = $result->fetch(PDO::FETCH_ASSOC);
                                 </div>
                                 <div class="form-group">
                                     <label>Widget Type</label>
-                                    <?php
-                                        // TODO : Select the Widget Type from Database Value
-                                    ?>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="type" id="optionsRadios1" value="html" checked="">HTML
+                                            <input type="radio" name="type" id="optionsRadios1" value="html" <?php if($widget['type'] == 'html'){ echo "checked"; } ?>>HTML
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="type" id="optionsRadios2" value="categories">Categories
+                                            <input type="radio" name="type" id="optionsRadios2" value="categories" <?php if($widget['type'] == 'categories'){ echo "checked"; } ?>>Categories
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="type" id="optionsRadios3" value="search">Search
+                                            <input type="radio" name="type" id="optionsRadios3" value="search" <?php if($widget['type'] == 'search'){ echo "checked"; } ?>>Search
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="type" id="optionsRadios3" value="articles">Recent Articles
+                                            <input type="radio" name="type" id="optionsRadios3" value="articles" <?php if($widget['type'] == 'articles'){ echo "checked"; } ?>>Recent Articles
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="type" id="optionsRadios3" value="pages">Pages
+                                            <input type="radio" name="type" id="optionsRadios3" value="pages" <?php if($widget['type'] == 'pages'){ echo "checked"; } ?>>Pages
                                         </label>
                                     </div>
                                 </div>
@@ -137,15 +134,13 @@ $widget = $result->fetch(PDO::FETCH_ASSOC);
                                 </div>
                                 <div class="form-group">
                                     <label>Widget Order</label>
-                                    <?php
-                                        // TODO : Select the Widget Order from Database Value
-                                    ?>
                                     <select class="form-control" name="order">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
+                                        <?php
+                                            for ($i=1; $i < 10; $i++) {
+                                                if($widget['widget_order'] == $i){ $checked = "selected"; }else{ $checked = ""; } 
+                                                echo "<option value='$i' $checked>$i</option>";
+                                            }
+                                        ?>
                                     </select>
                                 </div>
 
