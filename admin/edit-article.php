@@ -118,8 +118,15 @@ $post = $result->fetch(PDO::FETCH_ASSOC);
                                     <textarea class="form-control" name="content" rows="3"><?php if(isset($post['content'])){ echo $post['content'];} ?></textarea>
                                 </div>
                                 <div class="form-group">
+                                    <?php
+                                        if(isset($post['pic']) & !empty($post['pic'])){
+                                            echo "<img src='../".$post['pic']."' height='50px' width='100px'>";
+                                            echo "<a href='delete-pic.php?id=". $_GET['id'] ."'>Delete Pic</a>";
+                                        }else{
+                                    ?>
                                     <label>Featured Image</label>
                                     <input type="file" name="pic">
+                                    <?php } ?>
                                 </div>
 
                                 <div class="row">
