@@ -22,7 +22,7 @@ if($widgetcount == 1){
 <?php } ?>
 
 <?php
-$searchsql = "SELECT * FROM widget WHERE type='search'";
+$searchsql = "SELECT * FROM widget WHERE type='categories'";
 $searchresult = $db->prepare($searchsql);
 $searchresult->execute();
 $widgetcount = $searchresult->rowCount();
@@ -31,18 +31,80 @@ if($widgetcount == 1){
   $catsql = "SELECT * FROM categories";
   $catresult = $db->prepare($catsql);
   $catresult->execute();
-  $catres = $catresult->fetch(PDO::FETCH_ASSOC);
+  $catres = $catresult->fetchAll(PDO::FETCH_ASSOC);
 ?>
   <!-- Categories Widget -->
   <div class="card my-4">
     <h5 class="card-header">Categories</h5>
     <div class="card-body">
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
           <ul class="list-unstyled mb-0">
             <?php foreach ($catres as $cat) { ?>
             <li>
               <a href="category.php?id=<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?></a>
+            </li>
+            <?php } ?>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php } ?>
+
+<?php
+$searchsql = "SELECT * FROM widget WHERE type='articles'";
+$searchresult = $db->prepare($searchsql);
+$searchresult->execute();
+$widgetcount = $searchresult->rowCount();
+if($widgetcount == 1){
+
+  $postsql = "SELECT * FROM posts LIMIT 5";
+  $postresult = $db->prepare($postsql);
+  $postresult->execute();
+  $postres = $postresult->fetchAll(PDO::FETCH_ASSOC);
+?>
+  <!-- Categories Widget -->
+  <div class="card my-4">
+    <h5 class="card-header">Recent Articles</h5>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <ul class="list-unstyled mb-0">
+            <?php foreach ($postres as $post) { ?>
+            <li>
+              <a href="single.php?id=<?php echo $post['id']; ?>"><?php echo $post['title']; ?></a>
+            </li>
+            <?php } ?>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php } ?>
+
+<?php
+$searchsql = "SELECT * FROM widget WHERE type='pages'";
+$searchresult = $db->prepare($searchsql);
+$searchresult->execute();
+$widgetcount = $searchresult->rowCount();
+if($widgetcount == 1){
+
+  $pagesql = "SELECT * FROM pages LIMIT 5";
+  $pageresult = $db->prepare($pagesql);
+  $pageresult->execute();
+  $pageres = $pageresult->fetchAll(PDO::FETCH_ASSOC);
+?>
+  <!-- Categories Widget -->
+  <div class="card my-4">
+    <h5 class="card-header">Pages</h5>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <ul class="list-unstyled mb-0">
+            <?php foreach ($pageres as $page) { ?>
+            <li>
+              <a href="page.php?id=<?php echo $page['id']; ?>"><?php echo $page['title']; ?></a>
             </li>
             <?php } ?>
           </ul>

@@ -116,6 +116,11 @@ include('includes/navigation.php');
                                             <input type="radio" name="type" id="optionsRadios3" value="articles">Recent Articles
                                         </label>
                                     </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="type" id="optionsRadios3" value="pages">Pages
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Widget Content</label>
