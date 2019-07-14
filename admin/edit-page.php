@@ -30,16 +30,35 @@ if(isset($_POST) & !empty($_POST)){
         unset($_SESSION['csrf_token_time']);
     }
     if(empty($errors)){
-        // TODO : Re Upload Page Image
         // TODO : Only user with Administrator privillages or user who created the page can only edit 
-        $sql = "UPDATE pages SET title=:title, content=:content, status=:status, slug=:slug, page_order=:pageorder, updated=NOW() WHERE id=:id";
+        if(isset($_FILES) & !empty($_FILES)){
+            $name = $_FILES['pic']['name'];
+            $size = $_FILES['pic']['size'];
+            $type = $_FILES['pic']['type'];
+            $tmp_name = $_FILES['pic']['tmp_name'];
+
+            if(isset($name) && !empty($name)){
+                if($type == "image/jpeg"){
+                    $location = "../media/";
+                    $filename = time() . $name;
+                    $uploadpath = $location.$filename;
+                    $dbpath = "media/" . $filename;
+                    move_uploaded_file($tmp_name, $uploadpath);
+                }else{
+                    $errors[] = "Only Upload JPEG files";
+                }
+            }
+        }
+
+        $sql = "UPDATE pages SET title=:title, content=:content, status=:status, slug=:slug, pic=:pic, page_order=:pageorder, updated=NOW() WHERE id=:id";
         $result = $db->prepare($sql);
         $values = array(':title'    => $_POST['title'],
                         ':content'  => $_POST['content'],
                         ':status'   => $_POST['status'],
                         ':slug'     => $_POST['slug'],
                         ':pageorder'=> $_POST['pageorder'],
-                        ':id'       => $_POST['id']
+                        ':id'       => $_POST['id'],
+                        ':pic'      => $dbpath
                         );
         $res = $result->execute($values) or die(print_r($result->errorInfo(), true));
         if($res){
@@ -97,7 +116,7 @@ $page = $result->fetch(PDO::FETCH_ASSOC);
                     ?>
                     <div class="row">
                         <div class="col-lg-12">
-                            <form role="form" method="post">
+                            <form role="form" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
                                 <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
                                 <div class="form-group">
@@ -109,8 +128,15 @@ $page = $result->fetch(PDO::FETCH_ASSOC);
                                     <textarea class="form-control" name="content" rows="3"><?php if(isset($page['content'])){ echo $page['content'];} ?></textarea>
                                 </div>
                                 <div class="form-group">
+                                    <?php
+                                        if(isset($page['pic']) & !empty($page['pic'])){
+                                            echo "<img src='../".$page['pic']."' height='50px' width='100px'>";
+                                            echo "<a href='delete-pic.php?id=". $_GET['id'] ."&type=page'>Delete Pic</a>";
+                                        }else{
+                                    ?>
                                     <label>Featured Image</label>
-                                    <input type="file" name="image">
+                                    <input type="file" name="pic">
+                                    <?php } ?>
                                 </div>
 
                                 <div class="row">

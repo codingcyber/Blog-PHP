@@ -140,7 +140,7 @@ $post = $result->fetch(PDO::FETCH_ASSOC);
                                     <?php
                                         if(isset($post['pic']) & !empty($post['pic'])){
                                             echo "<img src='../".$post['pic']."' height='50px' width='100px'>";
-                                            echo "<a href='delete-pic.php?id=". $_GET['id'] ."'>Delete Pic</a>";
+                                            echo "<a href='delete-pic.php?id=". $_GET['id'] ."&type=post'>Delete Pic</a>";
                                         }else{
                                     ?>
                                     <label>Featured Image</label>

@@ -30,15 +30,33 @@ if(isset($_POST) & !empty($_POST)){
         unset($_SESSION['csrf_token_time']);
     }
     if(empty($errors)){
-        // TODO : Upload Page Image
-        $sql = "INSERT INTO pages (uid, title, content, status, slug, page_order) VALUES (:uid, :title, :content, :status, :slug, :pageorder)";
+        if(isset($_FILES) & !empty($_FILES)){
+            $name = $_FILES['pic']['name'];
+            $size = $_FILES['pic']['size'];
+            $type = $_FILES['pic']['type'];
+            $tmp_name = $_FILES['pic']['tmp_name'];
+
+            if(isset($name) && !empty($name)){
+                if($type == "image/jpeg"){
+                    $location = "../media/";
+                    $filename = time() . $name;
+                    $uploadpath = $location.$filename;
+                    $dbpath = "media/" . $filename;
+                    move_uploaded_file($tmp_name, $uploadpath);
+                }else{
+                    $errors[] = "Only Upload JPEG files";
+                }
+            }
+        }
+        $sql = "INSERT INTO pages (uid, title, content, status, slug, pic, page_order) VALUES (:uid, :title, :content, :status, :slug, :pic, :pageorder)";
         $result = $db->prepare($sql);
         $values = array(':uid'      => $_SESSION['id'],
                         ':title'    => $_POST['title'],
                         ':content'  =>  $_POST['content'],
                         ':status'   => $_POST['status'],
                         ':slug'     => $_POST['slug'],
-                        ':pageorder'=> $_POST['pageorder']
+                        ':pageorder'=> $_POST['pageorder'],
+                        ':pic'      => $dbpath
                         );
         $res = $result->execute($values) or die(print_r($result->errorInfo(), true));
         if($res){
@@ -91,7 +109,7 @@ include('includes/navigation.php');
                     ?>
                     <div class="row">
                         <div class="col-lg-12">
-                            <form role="form" method="post">
+                            <form role="form" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
                                 <div class="form-group">
                                     <label>Page Title</label>
@@ -103,7 +121,7 @@ include('includes/navigation.php');
                                 </div>
                                 <div class="form-group">
                                     <label>Featured Image</label>
-                                    <input type="file" name="image">
+                                    <input type="file" name="pic">
                                 </div>
 
                                 <div class="row">
