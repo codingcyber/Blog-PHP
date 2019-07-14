@@ -52,7 +52,7 @@ include('includes/navigation.php');
                                     <td><?php echo $post['title']; ?></td>
                                     <td><?php echo $post['uid']; ?></td>
                                     <td>Cat1, Cat2, Cat3</td>
-                                    <td>Yes/No</td>
+                                    <td><?php if(isset($post['pic']) & !empty($post['pic'])){ echo "Yes"; }else{ echo "No"; } ?></td>
                                     <td><?php echo $post['updated']; ?></td>
                                     <td><?php echo $post['status']; ?></td>
                                     <td><a href="edit-article.php?id=<?php echo $post['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $post['id']; ?>&item=article">Delete</a></td>
