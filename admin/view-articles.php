@@ -43,13 +43,16 @@ include('includes/navigation.php');
                                     foreach ($res as $post) {
                                     // TODO : Only user with administrator privillages or user who created the article can only edit or delete post
 
-                                    // TODO : Display Categories with post_categories table data based on id
+                                    $catsql = "SELECT categories.title FROM categories INNER JOIN post_categories ON post_categories.cid=categories.id WHERE post_categories.pid=?";
+                                    $catresult = $db->prepare($catsql);
+                                    $catresult->execute(array($post['id']));
+                                    $categories = $catresult->fetchAll(PDO::FETCH_ASSOC);
                                 ?>
                                 <tr>
                                     <td><?php echo $post['id']; ?></td>
                                     <td><?php echo $post['title']; ?></td>
                                     <td><?php echo $post['uid']; ?></td>
-                                    <td>Cat1, Cat2, Cat3</td>
+                                    <td><?php foreach ($categories as $cat) {echo $cat['title'].", ";} ?></td>
                                     <td><?php if(isset($post['pic']) & !empty($post['pic'])){ echo "Yes"; }else{ echo "No"; } ?></td>
                                     <td><?php echo $post['updated']; ?></td>
                                     <td><?php echo $post['status']; ?></td>
