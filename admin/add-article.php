@@ -138,7 +138,6 @@ include('includes/navigation.php');
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <?php 
-                                                // TODO : Select the Category After Failed Submission
                                             // Fetch categories from categories table
                                             $sql = "SELECT * FROM categories";
                                             $result = $db->prepare($sql);
@@ -149,7 +148,8 @@ include('includes/navigation.php');
                                             <select multiple="" name="categories[]" class="form-control">
                                                 <?php
                                                     foreach ($res as $cat) {
-                                                        echo "<option value='".$cat['id']."'>".$cat['title']."</option>";
+                                                        if(in_array($cat['id'], $_POST['categories'])){ $checked = "selected"; }else{ $checked = ""; }
+                                                        echo "<option value='".$cat['id']."'".$checked .">".$cat['title']."</option>";
                                                     }
                                                 ?>
                                             </select>
@@ -158,22 +158,19 @@ include('includes/navigation.php');
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Article Status</label>
-                                            <?php 
-                                                // TODO : Select the Article Status After Failed Submission
-                                            ?>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="status" id="optionsRadios1" value="draft" checked="">Draft
+                                                    <input type="radio" name="status" id="optionsRadios1" value="draft" <?php if(isset($_POST) & !empty($_POST)){ if($_POST['status'] == 'draft'){ echo "checked"; } } ?>>Draft
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="status" id="optionsRadios2" value="review">Pending Review
+                                                    <input type="radio" name="status" id="optionsRadios2" value="review" <?php if(isset($_POST) & !empty($_POST)){ if($_POST['status'] == 'review'){ echo "checked"; } } ?>>Pending Review
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="status" id="optionsRadios3" value="published">Published
+                                                    <input type="radio" name="status" id="optionsRadios3" value="published" <?php if(isset($_POST) & !empty($_POST)){ if($_POST['status'] == 'published'){ echo "checked"; } } ?>>Published
                                                 </label>
                                             </div>
                                         </div>
