@@ -50,26 +50,37 @@ if(isset($_POST) & !empty($_POST)){
             }
         }
 
-        $sql = "UPDATE posts SET title=:title, content=:content, status=:status, slug=:slug, pic=:pic, updated=NOW() WHERE id=:id";
+        $sql = "UPDATE posts SET title=:title, content=:content, status=:status, slug=:slug, ";
+        if(isset($dbpath) & !empty($dbpath)){ $sql ="pic=:pic, "; }  
+        $sql .= "updated=NOW() WHERE id=:id";
         $result = $db->prepare($sql);
         $values = array(':title'    => $_POST['title'],
                         ':content'  => $_POST['content'],
                         ':status'   => $_POST['status'],
                         ':slug'     => $_POST['slug'],
                         ':id'       => $_POST['id'],
-                        ':pic'      => $dbpath
                         );
+        if(isset($dbpath) & !empty($dbpath)){ $values[':pic'] = $dbpath;}
         $res = $result->execute($values) or die(print_r($result->errorInfo(), true));
         if($res){
-            // TODO : check post id and category id in post_categories table, then only create or update records
-            $pid = $db->lastInsertID();
+            // TODO : removing non selected categories from post_categories table
+            $pid = $_POST['id'];
             foreach ($_POST['categories'] as $category) {
-            $sql = "INSERT INTO post_categories (pid, cid) VALUES (:pid, :cid)";
-            $result = $db->prepare($sql);
-            $values = array(':pid'  => $pid,
-                            ':cid'  => $category
-                            );
-            $res = $result->execute($values) or die(print_r($result->errorInfo(), true));
+                $catsql = "SELECT * FROM post_categories WHERE pid=:pid AND cid=:cid";
+                $catresult = $db->prepare($catsql);
+                $values = array(':pid'      => $pid,
+                                ':cid'      => $category,
+                                );
+                $catresult->execute($values);
+                $catcount = $catresult->rowCount();
+                if($catcount == 1){}else{
+                    $sql = "INSERT INTO post_categories (pid, cid) VALUES (:pid, :cid)";
+                    $result = $db->prepare($sql);
+                    $values = array(':pid'  => $pid,
+                                    ':cid'  => $category
+                                    );
+                    $res = $result->execute($values) or die(print_r($result->errorInfo(), true));
+                }
             }
             header("location: view-articles.php");
         }else{
@@ -171,22 +182,19 @@ $post = $result->fetch(PDO::FETCH_ASSOC);
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Article Status</label>
-                                            <?php 
-                                                // TODO : Select the Article Status After Failed Submission
-                                            ?>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="status" id="optionsRadios1" value="draft" checked="">Draft
+                                                    <input type="radio" name="status" id="optionsRadios1" value="draft" <?php if($post['status'] == 'draft'){ echo "checked"; } ?>>Draft
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="status" id="optionsRadios2" value="review">Pending Review
+                                                    <input type="radio" name="status" id="optionsRadios2" value="review" <?php if($post['status'] == 'review'){ echo "checked"; } ?>>Pending Review
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="status" id="optionsRadios3" value="published">Published
+                                                    <input type="radio" name="status" id="optionsRadios3" value="published" <?php if($post['status'] == 'published'){ echo "checked"; } ?>>Published
                                                 </label>
                                             </div>
                                         </div>
