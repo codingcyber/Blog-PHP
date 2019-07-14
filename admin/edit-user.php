@@ -124,14 +124,11 @@ $user = $result->fetch(PDO::FETCH_ASSOC);
                                 </div>
                                 <div class="form-group">
                                     <label>User Role</label>
-                                    <?php
-                                        // TODO : Select the User Role based on Existing value from Database
-                                    ?>
                                     <select class="form-control" name="role">
                                         <option>Select User Role</option>
-                                        <option>Subscriber</option>
-                                        <option>Editor</option>
-                                        <option>Administrator</option>
+                                        <option value="subscriber" <?php if($user['role'] == 'subscriber'){ echo "selected"; } ?>>Subscriber</option>
+                                        <option value="editor" <?php if($user['role'] == 'editor'){ echo "selected"; } ?>>Editor</option>
+                                        <option value="administrator" <?php if($user['role'] == 'administrator'){ echo "selected"; } ?>>Administrator</option>
                                     </select>
                                 </div>
 
