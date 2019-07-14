@@ -30,15 +30,34 @@ if(isset($_POST) & !empty($_POST)){
         unset($_SESSION['csrf_token_time']);
     }
     if(empty($errors)){
-        // TODO : Upload Article Image
         // TODO : Only user with Administrator privillages or user who created the article can only edit 
-        $sql = "UPDATE posts SET title=:title, content=:content, status=:status, slug=:slug, updated=NOW() WHERE id=:id";
+        if(isset($_FILES) & !empty($_FILES)){
+            $name = $_FILES['pic']['name'];
+            $size = $_FILES['pic']['size'];
+            $type = $_FILES['pic']['type'];
+            $tmp_name = $_FILES['pic']['tmp_name'];
+
+            if(isset($name) && !empty($name)){
+                if($type == "image/jpeg"){
+                    $location = "../media/";
+                    $filename = time() . $name;
+                    $uploadpath = $location.$filename;
+                    $dbpath = "media/" . $filename;
+                    move_uploaded_file($tmp_name, $uploadpath);
+                }else{
+                    $errors[] = "Only Upload JPEG files";
+                }
+            }
+        }
+
+        $sql = "UPDATE posts SET title=:title, content=:content, status=:status, slug=:slug, pic=:pic, updated=NOW() WHERE id=:id";
         $result = $db->prepare($sql);
         $values = array(':title'    => $_POST['title'],
                         ':content'  => $_POST['content'],
                         ':status'   => $_POST['status'],
                         ':slug'     => $_POST['slug'],
-                        ':id'       => $_POST['id']
+                        ':id'       => $_POST['id'],
+                        ':pic'      => $dbpath
                         );
         $res = $result->execute($values) or die(print_r($result->errorInfo(), true));
         if($res){
@@ -106,7 +125,7 @@ $post = $result->fetch(PDO::FETCH_ASSOC);
                     ?>
                     <div class="row">
                         <div class="col-lg-12">
-                            <form role="form" method="post">
+                            <form role="form" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
                                 <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
                                 <div class="form-group">

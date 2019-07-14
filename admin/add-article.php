@@ -30,7 +30,6 @@ if(isset($_POST) & !empty($_POST)){
         unset($_SESSION['csrf_token_time']);
     }
     if(empty($errors)){
-        // TODO : Upload Article Image
         if(isset($_FILES) & !empty($_FILES)){
             $name = $_FILES['pic']['name'];
             $size = $_FILES['pic']['size'];

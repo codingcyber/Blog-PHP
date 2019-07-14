@@ -44,8 +44,6 @@ include('includes/navigation.php');
                                     // TODO : Only user with administrator privillages or user who created the article can only edit or delete post
 
                                     // TODO : Display Categories with post_categories table data based on id
-
-                                    // TODO : Display Image Status - Yes or No
                                 ?>
                                 <tr>
                                     <td><?php echo $post['id']; ?></td>
