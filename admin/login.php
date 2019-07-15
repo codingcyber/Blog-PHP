@@ -1,7 +1,8 @@
 <?php 
 session_start();
-include('includes/header.php'); 
 require_once('../includes/connect.php');
+include('includes/if-loggedin.php');
+include('includes/header.php'); 
 if(isset($_POST) & !empty($_POST)){
     print_r($_POST);
     if(empty($_POST['email'])){ $errors[] = 'User Name / E-mail field is Required';}
@@ -81,6 +82,9 @@ $_SESSION['csrf_token_time'] = time();
                             }
                             echo "</div>";
                         }
+                        echo "<pre>";
+                        print_r($_SESSION);
+                        echo "</pre>";
                     ?>
                     <?php
                         if(!empty($errors)){

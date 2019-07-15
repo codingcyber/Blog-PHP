@@ -1,7 +1,8 @@
 <?php 
 session_start();
-include('includes/header.php'); 
 require_once('includes/connect.php');
+include('admin/includes/if-loggedin.php');
+include('includes/header.php'); 
 if(isset($_POST) & !empty($_POST)){
     // PHP Form Validations
     if(empty($_POST['uname'])){ $errors[] = 'User Name field is Required';}else{
