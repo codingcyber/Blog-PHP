@@ -1,7 +1,18 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="index.php">Blog</a>
+    <?php
+        $titlesql = "SELECT * FROM settings WHERE name='sitetitle'";
+        $titleresult = $db->prepare($titlesql);
+        $titleresult->execute();
+        $title = $titleresult->fetch(PDO::FETCH_ASSOC);
+
+        $tagsql = "SELECT * FROM settings WHERE name='tagline'";
+        $tagresult = $db->prepare($tagsql);
+        $tagresult->execute();
+        $tag = $tagresult->fetch(PDO::FETCH_ASSOC);
+    ?>
+    <a class="navbar-brand" href="index.php"><?php echo $title['value']; ?> | <?php echo $tag['value']; ?></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
