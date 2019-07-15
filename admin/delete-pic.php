@@ -1,6 +1,6 @@
 <?php
-include('includes/check-login.php');
 require_once('../includes/connect.php');
+include('includes/check-login.php');
 if(isset($_GET) & !empty($_GET)){
 	$id = $_GET['id'];
 	switch ($_GET['type']) {
