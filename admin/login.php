@@ -99,7 +99,7 @@ $_SESSION['csrf_token_time'] = time();
                         <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" placeholder="E-mail or User Name" name="email" type="text" autofocus>
+                                <input class="form-control" placeholder="E-mail or User Name" name="email" type="text" autofocus value="<?php if(isset($_POST['email'])){ echo $_POST['email']; } ?>">
                             </div>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Password" name="password" type="password" value="">
