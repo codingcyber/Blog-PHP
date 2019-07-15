@@ -3,6 +3,72 @@ include('includes/check-login.php');
 require_once('../includes/connect.php'); 
 include('includes/header.php');
 include('includes/navigation.php'); 
+if(isset($_POST) & !empty($_POST)){
+    // PHP Form Validations
+    if(empty($_POST['sitetitle'])){$errors[] = "Site Title Field is Required";}
+    if(empty($_POST['tagline'])){$errors[] = "Tag Line Field is Required";}
+    if(empty($_POST['email'])){$errors[] = "E-Mail Field is Required";}
+    if(empty($_POST['userreg'])){$errors[] = "User Registration Field is Required";}
+    if(empty($_POST['resultsperpage'])){$errors[] = "Results Per Page Field is Required";}
+    if(empty($_POST['comments'])){$errors[] = "Comments Field is Required";}
+    if(empty($_POST['cleanurls'])){$errors[] = "Clean URLs Field is Required";}
+    // CSRF Token Validation
+    if(isset($_POST['csrf_token'])){
+        if($_POST['csrf_token'] === $_SESSION['csrf_token']){
+        }else{
+            $errors[] = "Problem with CSRF Token Verification";
+        }
+    }else{
+        $errors[] = "Problem with CSRF Token Validation";
+    }
+    // CSRF Token Time Validation
+    $max_time = 60*60*24;
+    if(isset($_SESSION['csrf_token_time'])){
+        $token_time = $_SESSION['csrf_token_time'];
+        if(($token_time + $max_time) >= time()){
+        }else{
+            $errors[] = "CSRF Token Expired";
+            unset($_SESSION['csrf_token']);
+            unset($_SESSION['csrf_token_time']);
+        }
+    }else{
+        unset($_SESSION['csrf_token']);
+        unset($_SESSION['csrf_token_time']);
+    }
+    if(empty($errors)){
+        $titlesql = "UPDATE settings SET value=?, updated=NOW() WHERE name='sitetitle'";
+        $titleresult = $db->prepare($titlesql);
+        $titleresult->execute(array($_POST['sitetitle']));
+
+        $tagsql = "UPDATE settings SET value=?, updated=NOW() WHERE name='tagline'";
+        $tagresult = $db->prepare($tagsql);
+        $tagresult->execute(array($_POST['tagline']));
+
+        $emailsql = "UPDATE settings SET value=?, updated=NOW() WHERE name='email'";
+        $emailresult = $db->prepare($emailsql);
+        $emailresult->execute(array($_POST['email']));
+
+        $userregsql = "UPDATE settings SET value=?, updated=NOW() WHERE name='userreg'";
+        $userregresult = $db->prepare($userregsql);
+        $userregresult->execute(array($_POST['userreg']));
+
+        $rppsql = "UPDATE settings SET value=?, updated=NOW() WHERE name='resultsperpage'";
+        $rppresult = $db->prepare($rppsql);
+        $rppresult->execute(array($_POST['resultsperpage']));
+
+        $comsql = "UPDATE settings SET value=?, updated=NOW() WHERE name='comments'";
+        $comresult = $db->prepare($comsql);
+        $comresult->execute(array($_POST['comments']));
+
+        $urlsql = "UPDATE settings SET value=?, updated=NOW() WHERE name='cleanurls'";
+        $urlresult = $db->prepare($urlsql);
+        $urlresult->execute(array($_POST['cleanurls']));
+    }
+}
+// Create CSRF token
+$token = md5(uniqid(rand(), TRUE));
+$_SESSION['csrf_token'] = $token;
+$_SESSION['csrf_token_time'] = time();
 ?>
 <div id="page-wrapper" style="min-height: 345px;">
     <div class="row">
@@ -19,9 +85,28 @@ include('includes/navigation.php');
                     CMS Settings Here...
                 </div>
                 <div class="panel-body">
+                    <?php
+                        if(!empty($messages)){
+                            echo "<div class='alert alert-success'>";
+                            foreach ($messages as $message) {
+                                echo "<span class='glyphicon glyphicon-ok'></span>&nbsp;". $message ."<br>";
+                            }
+                            echo "</div>";
+                        }
+                    ?>
+                    <?php
+                        if(!empty($errors)){
+                            echo "<div class='alert alert-danger'>";
+                            foreach ($errors as $error) {
+                                echo "<span class='glyphicon glyphicon-remove'></span>&nbsp;". $error ."<br>";
+                            }
+                            echo "</div>";
+                        }
+                    ?>
                     <div class="row">
                         <div class="col-lg-6">
                             <form role="form" method="post">
+                                <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
                                 <div class="form-group">
                                     <?php
                                         $titlesql = "SELECT * FROM settings WHERE name='sitetitle'";
@@ -40,7 +125,7 @@ include('includes/navigation.php');
                                         $tag = $tagresult->fetch(PDO::FETCH_ASSOC);
                                     ?>
                                     <label>Tagline</label>
-                                    <input type="email" name="tagline" class="form-control" placeholder="Enter Tagline" value="<?php echo $tag['value']; ?>">
+                                    <input name="tagline" class="form-control" placeholder="Enter Tagline" value="<?php echo $tag['value']; ?>">
                                 </div>
                                 <div class="form-group">
                                     <?php
@@ -75,7 +160,7 @@ include('includes/navigation.php');
                                         $rpp = $rppresult->fetch(PDO::FETCH_ASSOC);
                                     ?>
                                     <label>Results Per Page</label>
-                                    <input class="form-control" name="resultsperpage" placeholder="Enter Results Per Page" value="<?php echo $rpp['value']; ?>">
+                                    <input type="number" class="form-control" name="resultsperpage" placeholder="Enter Results Per Page" value="<?php echo $rpp['value']; ?>">
                                 </div>
                                 <div class="form-group">
                                     <?php
