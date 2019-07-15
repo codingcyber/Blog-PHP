@@ -1,5 +1,9 @@
-<?php include('includes/header.php'); ?>
-<?php include('includes/navigation.php'); ?>
+<?php 
+include('includes/check-login.php');
+require_once('../includes/connect.php'); 
+include('includes/header.php');
+include('includes/navigation.php'); 
+?>
 <div id="page-wrapper" style="min-height: 345px;">
     <div class="row">
         <div class="col-lg-12">
@@ -17,48 +21,48 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            <form role="form">
+                            <form role="form" method="post">
                                 <div class="form-group">
                                     <label>Site Title</label>
-                                    <input class="form-control" placeholder="Enter User Name">
+                                    <input class="form-control" name="sitetitle" placeholder="Enter Site Title">
                                 </div>
                                 <div class="form-group">
                                     <label>Tagline</label>
-                                    <input type="email" class="form-control" placeholder="Enter E-Mail">
+                                    <input type="email" name="tagline" class="form-control" placeholder="Enter Tagline">
                                 </div>
                                 <div class="form-group">
                                     <label>Site Email Address</label>
-                                    <input class="form-control" placeholder="Enter First Name">
+                                    <input type="email" class="form-control" name="email" placeholder="Enter E-Mail">
                                 </div>
                                 <div class="form-group">
                                     <label>User Registration</label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" checked="">Yes 
+                                        <input type="radio" name="userreg" id="optionsRadiosInline1" value="yes" checked="">Yes 
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2">No
+                                        <input type="radio" name="userreg" id="optionsRadiosInline2" value="no">No
                                     </label>
                                 </div>
                                 <div class="form-group">
                                     <label>Results Per Page</label>
-                                    <input class="form-control" placeholder="Enter Last Name">
+                                    <input class="form-control" name="resultsperpage" placeholder="Enter Results Per Page">
                                 </div>
                                 <div class="form-group">
                                     <label>Comments</label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" checked="">Enable 
+                                        <input type="radio" name="comments" id="optionsRadiosInline1" value="yes" checked="">Enable 
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2">Disable
+                                        <input type="radio" name="comments" id="optionsRadiosInline2" value="no">Disable
                                     </label>
                                 </div>
                                 <div class="form-group">
                                     <label>Clean URL's</label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" checked="">Enable 
+                                        <input type="radio" name="cleanurls" id="optionsRadiosInline1" value="yes" checked="">Enable 
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2">Disable
+                                        <input type="radio" name="cleanurls" id="optionsRadiosInline2" value="no">Disable
                                     </label>
                                 </div>
 

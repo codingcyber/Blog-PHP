@@ -67,3 +67,10 @@ widget
 -order
 -created
 -updated
+
+settings
+-id
+-name
+-value
+-created
+-updated
