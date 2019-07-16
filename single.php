@@ -29,8 +29,16 @@ $user = $userresult->fetch(PDO::FETCH_ASSOC);
       <p class="lead">
         by
         <a href="user-posts.php?id=<?php echo $user['id']; ?>"><?php if((isset($user['fname']) || isset($user['lname'])) & (!empty($user['fname']) || !empty($user['lname']))) {echo $user['fname'] . " " . $user['lname']; }else{echo $user['username']; } ?></a>
+      <?php
+        $sql = "SELECT * FROM comments WHERE pid=? AND status='approved'";
+        $result = $db->prepare($sql);
+        $result->execute(array($post['id']));
+        $commentcount = $result->rowCount();
+        if($commentcount >= 1){
+      ?>
+      <a href="#" class="btn btn-primary"><?php echo $commentcount; ?> Comments</a>
+      <?php } ?>
       </p>
-
       <hr>
 
       <!-- Date/Time -->

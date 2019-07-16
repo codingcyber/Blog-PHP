@@ -30,6 +30,15 @@ $posts = $result->fetchAll(PDO::FETCH_ASSOC);
           <div class="card-body">
             <h2 class="card-title"><?php echo $post['title']; ?></h2>
             <p class="card-text"><?php echo $post['content']; ?></p>
+            <?php
+              $sql = "SELECT * FROM comments WHERE pid=? AND status='approved'";
+              $result = $db->prepare($sql);
+              $result->execute(array($post['id']));
+              $commentcount = $result->rowCount();
+              if($commentcount >= 1){
+            ?>
+            <a href="#" class="btn btn-secondary"><?php echo $commentcount; ?> Comments</a>
+            <?php } ?>
             <a href="single.php?id=<?php echo $post['id']; ?>" class="btn btn-primary">Read More &rarr;</a>
           </div>
           <div class="card-footer text-muted">
