@@ -100,15 +100,25 @@ $user = $userresult->fetch(PDO::FETCH_ASSOC);
       </div>
       <?php }else{ echo "<h3>You Should be LoggedIn to Post Comments.</h3><hr>"; }
             }else{ echo "<h3>Comments are Disabled.</h3><hr>"; } ?>
+      <?php
+          $sql = "SELECT comments.comment, users.username, users.fname, users.lname, users.role FROM comments INNER JOIN users ON comments.uid=users.id WHERE comments.pid=? AND comments.status='approved'";
+          $result = $db->prepare($sql);
+          $result->execute(array($_GET['id'])) or die(print_r($result->errorInfo(), true));
+          $comments = $result->fetchAll(PDO::FETCH_ASSOC);
+          foreach($comments as $comment){
+      ?>
       <!-- Single Comment -->
       <div class="media mb-4">
         <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
         <div class="media-body">
-          <h5 class="mt-0">Commenter Name</h5>
-          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+          <h5 class="mt-0">
+              <?php if((isset($comment['fname']) || isset($comment['lname'])) & (!empty($comment['fname']) || !empty($comment['lname']))) { echo $comment['fname'] . " " . $comment['lname']; }else{ echo $comment['username']; } ?> 
+              <?php if(($comment['role'] == 'administrator')){ echo "<span class='badge badge-danger'>Admin</span>"; }elseif(($comment['role'] == 'editor')){ echo "<span class='badge badge-primary'>Editor</span>"; } ?>
+            </h5>
+          <?php echo $comment['comment']; ?>
         </div>
       </div>
-
+      <?php } ?>
       <!-- Comment with nested comments -->
       <div class="media mb-4">
         <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
