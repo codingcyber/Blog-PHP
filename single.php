@@ -57,7 +57,9 @@ $user = $userresult->fetch(PDO::FETCH_ASSOC);
           $comresult->execute();
           $com = $comresult->fetch(PDO::FETCH_ASSOC);
       ?>
-      <?php if($com['value'] == 'yes'){ ?>
+      <?php if($com['value'] == 'yes'){ 
+            if(isset($_SESSION['id']) & !empty($_SESSION['id'])){
+        ?>
       <!-- Comments Form -->
       <div class="card my-4">
         <h5 class="card-header">Leave a Comment:</h5>
@@ -70,7 +72,8 @@ $user = $userresult->fetch(PDO::FETCH_ASSOC);
           </form>
         </div>
       </div>
-      <?php }else{ echo "<h3>Comments are Disabled.</h3><hr>"; } ?>
+      <?php }else{ echo "<h3>You Should be LoggedIn to Post Comments.</h3><hr>"; }
+            }else{ echo "<h3>Comments are Disabled.</h3><hr>"; } ?>
       <!-- Single Comment -->
       <div class="media mb-4">
         <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">

@@ -41,10 +41,8 @@ post_categories
 comments
 -id
 -pid
--name
--email
--website
--message
+-uid
+-comment
 -created
 -updated
 

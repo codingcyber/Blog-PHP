@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 10, 2019 at 10:02 AM
+-- Generation Time: Jul 16, 2019 at 04:16 PM
 -- Server version: 10.3.15-MariaDB
 -- PHP Version: 7.1.30
 
@@ -46,10 +46,9 @@ CREATE TABLE `categories` (
 CREATE TABLE `comments` (
   `id` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `website` varchar(255) NOT NULL,
-  `message` varchar(255) NOT NULL,
+  `uid` int(11) NOT NULL,
+  `comment` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `updated` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -67,6 +66,8 @@ CREATE TABLE `pages` (
   `content` text NOT NULL,
   `status` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
+  `pic` varchar(255) NOT NULL,
+  `page_order` varchar(255) NOT NULL,
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `updated` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -99,6 +100,20 @@ CREATE TABLE `post_categories` (
   `id` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   `cid` int(11) NOT NULL,
+  `created` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings`
+--
+
+CREATE TABLE `settings` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL,
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `updated` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -172,6 +187,12 @@ ALTER TABLE `post_categories`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `settings`
+--
+ALTER TABLE `settings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -215,6 +236,12 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT for table `post_categories`
 --
 ALTER TABLE `post_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `settings`
+--
+ALTER TABLE `settings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
