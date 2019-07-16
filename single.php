@@ -2,6 +2,7 @@
 session_start();
 require_once('includes/connect.php');
 include('includes/header.php');
+include('comment.php');
 include('includes/navigation.php'); 
 $sql = "SELECT * FROM posts WHERE id=?";
 $result = $db->prepare($sql);
@@ -59,14 +60,39 @@ $user = $userresult->fetch(PDO::FETCH_ASSOC);
       ?>
       <?php if($com['value'] == 'yes'){ 
             if(isset($_SESSION['id']) & !empty($_SESSION['id'])){
+              // Create CSRF token
+              $token = md5(uniqid(rand(), TRUE));
+              $_SESSION['csrf_token'] = $token;
+              $_SESSION['csrf_token_time'] = time();
         ?>
       <!-- Comments Form -->
       <div class="card my-4">
         <h5 class="card-header">Leave a Comment:</h5>
         <div class="card-body">
-          <form>
+          <?php
+              if(!empty($messages)){
+                  echo "<div class='alert alert-success'>";
+                  foreach ($messages as $message) {
+                      echo "<span class='glyphicon glyphicon-ok'></span>&nbsp;". $message ."<br>";
+                  }
+                  echo "</div>";
+              }
+          ?>
+          <?php
+              if(!empty($errors)){
+                  echo "<div class='alert alert-danger'>";
+                  foreach ($errors as $error) {
+                      echo "<span class='glyphicon glyphicon-remove'></span>&nbsp;". $error ."<br>";
+                  }
+                  echo "</div>";
+              }
+          ?>
+          <form method="post">
             <div class="form-group">
-              <textarea class="form-control" rows="3"></textarea>
+              <input type="hidden" name="uid" value="<?php echo $_SESSION['id']; ?>">
+              <input type="hidden" name="pid" value="<?php echo $_GET['id']; ?>">
+              <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
+              <textarea class="form-control" name="comment" rows="3" required=""></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
