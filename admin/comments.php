@@ -48,7 +48,7 @@ include('includes/navigation.php');
                                     <td><?php echo $comment['title']; ?></td>
                                     <td><?php echo $comment['created']; ?></td>
                                     <td><?php echo $comment['status']; ?></td>
-                                    <td><?php 
+                                    <td><a href="edit-comment.php?id=<?php echo $comment['id']; ?>">Edit</a> | <?php 
                                         if($comment['status'] == 'approved'){
                                             echo "<a href='commentstatus.php?id=".$comment['id']."&status=disapproved'>Disapprove</a>";
                                         }else{
