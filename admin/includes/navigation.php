@@ -86,7 +86,7 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-table fa-fw"></i> Comments</a>
+                    <a href="comments.php"><i class="fa fa-table fa-fw"></i> Comments</a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Users<span class="fa arrow"></span></a>

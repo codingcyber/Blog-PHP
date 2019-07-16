@@ -1,5 +1,9 @@
-<?php include('includes/header.php'); ?>
-<?php include('includes/navigation.php'); ?>
+<?php 
+require_once('../includes/connect.php');
+include('includes/check-login.php');
+include('includes/header.php');
+include('includes/navigation.php'); 
+ ?>
 <div id="page-wrapper" style="min-height: 345px;">
     <div class="row">
         <div class="col-lg-12">
@@ -26,33 +30,33 @@
                                     <th>In Response To</th>
                                     <th>Date</th>
                                     <th>Status</th>
+                                    <th>Operations</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php
+                                    $sql = "SELECT comments.id, comments.comment, comments.status, comments.created, users.username, posts.title FROM comments INNER JOIN users ON comments.uid=users.id INNER JOIN posts ON comments.pid=posts.id";
+                                    $result = $db->prepare($sql);
+                                    $result->execute() or die(print_r($result->errorInfo(), true));
+                                    $res = $result->fetchAll(PDO::FETCH_ASSOC);
+                                    foreach($res as $comment){
+                                ?>
                                 <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
+                                    <td><?php echo $comment['id']; ?></td>
+                                    <td><?php echo $comment['username']; ?></td>
+                                    <td><?php echo $comment['comment']; ?></td>
+                                    <td><?php echo $comment['title']; ?></td>
+                                    <td><?php echo $comment['created']; ?></td>
+                                    <td><?php echo $comment['status']; ?></td>
+                                    <td><?php 
+                                        if($comment['status'] == 'approved'){
+                                            echo "<a href='commentstatus.php?id=".$comment['id']."&status=disapproved'>Disapprove</a>";
+                                        }else{
+                                            echo "<a href='commentstatus.php?id=".$comment['id']."&status=approved'>Approve</a>";
+                                        }
+                                     ?></td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
-                                </tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
