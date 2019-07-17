@@ -49,6 +49,14 @@ include('includes/navigation.php');
                                     <td><?php echo $comment['title']; ?></td>
                                     <td><?php echo $comment['created']; ?></td>
                                     <td><?php echo $comment['status']; ?></td>
+                                    <?php
+                                    $sql = "SELECT * FROM users WHERE id=?";
+                                    $result = $db->prepare($sql);
+                                    $result->execute(array($_SESSION['id']));
+                                    $user = $result->fetch(PDO::FETCH_ASSOC); 
+
+                                    if($user['role'] == 'administrator'){
+                                    ?>
                                     <td><a href="edit-comment.php?id=<?php echo $comment['id']; ?>">Edit</a> | <?php 
                                         if($comment['status'] == 'approved'){
                                             echo "<a href='commentstatus.php?id=".$comment['id']."&status=disapproved'>Disapprove</a>";
@@ -56,6 +64,7 @@ include('includes/navigation.php');
                                             echo "<a href='commentstatus.php?id=".$comment['id']."&status=approved'>Approve</a>";
                                         }
                                      ?></td>
+                                    <?php }else{ echo "<td>NA</td>"; } ?>
                                 </tr>
                                 <?php } ?>
                             </tbody>
