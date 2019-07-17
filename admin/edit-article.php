@@ -52,8 +52,9 @@ if(isset($_POST) & !empty($_POST)){
         }
 
         $sql = "UPDATE posts SET title=:title, content=:content, status=:status, slug=:slug, ";
-        if(isset($dbpath) & !empty($dbpath)){ $sql ="pic=:pic, "; }  
+        if(isset($dbpath) & !empty($dbpath)){ $sql .="pic=:pic, "; }  
         $sql .= "updated=NOW() WHERE id=:id";
+        echo $sql;
         $result = $db->prepare($sql);
         $values = array(':title'    => $_POST['title'],
                         ':content'  => $_POST['content'],

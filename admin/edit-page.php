@@ -51,16 +51,18 @@ if(isset($_POST) & !empty($_POST)){
             }
         }
 
-        $sql = "UPDATE pages SET title=:title, content=:content, status=:status, slug=:slug, pic=:pic, page_order=:pageorder, updated=NOW() WHERE id=:id";
+        $sql = "UPDATE pages SET title=:title, content=:content, status=:status, slug=:slug, ";
+        if(isset($dbpath) & !empty($dbpath)){ $sql .="pic=:pic, "; }
+        $sql .=" page_order=:pageorder, updated=NOW() WHERE id=:id";
         $result = $db->prepare($sql);
         $values = array(':title'    => $_POST['title'],
                         ':content'  => $_POST['content'],
                         ':status'   => $_POST['status'],
                         ':slug'     => $_POST['slug'],
                         ':pageorder'=> $_POST['pageorder'],
-                        ':id'       => $_POST['id'],
-                        ':pic'      => $dbpath
+                        ':id'       => $_POST['id']
                         );
+        if(isset($dbpath) & !empty($dbpath)){ $values[':pic'] = $dbpath;}
         $res = $result->execute($values) or die(print_r($result->errorInfo(), true));
         if($res){
             header("location: view-pages.php");

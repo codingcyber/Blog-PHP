@@ -3,6 +3,10 @@ require_once('../includes/connect.php');
 include('includes/check-login.php');
 include('includes/check-admin.php');
 include('includes/check-subscriber.php');
+$sql = "SELECT * FROM users WHERE id=?";
+$result = $db->prepare($sql);
+$result->execute(array($_SESSION['id']));
+$user = $result->fetch(PDO::FETCH_ASSOC); 
 if(isset($_GET) & !empty($_GET)){
 	$id = $_GET['id'];
 	switch ($_GET['type']) {
@@ -18,17 +22,33 @@ if(isset($_GET) & !empty($_GET)){
 			$redirect = 'dashboard.php';
 			break;
 	}
-	$sql = "SELECT * FROM $table WHERE id=?";
-	$result = $db->prepare($sql);
-	$result->execute(array($_GET['id']));
-	$post = $result->fetch(PDO::FETCH_ASSOC);
-	$filepath = '../'.$post['pic'];
-	if(unlink($filepath)){
-		$sql = "UPDATE $table SET pic='', updated=NOW() WHERE id=?";
+	if($user['role'] == 'administrator'){
+		$sql = "SELECT * FROM $table WHERE id=?";
 		$result = $db->prepare($sql);
-		$res = $result->execute(array($_GET['id']));
-		if($res){
-			header("location: $redirect");
+		$result->execute(array($_GET['id']));
+		$post = $result->fetch(PDO::FETCH_ASSOC);
+		$filepath = '../'.$post['pic'];
+		if(unlink($filepath)){
+			$sql = "UPDATE $table SET pic='', updated=NOW() WHERE id=?";
+			$result = $db->prepare($sql);
+			$res = $result->execute(array($_GET['id']));
+			if($res){
+				header("location: $redirect");
+			}
+		}
+	}elseif($user['role'] == 'editor'){
+		$sql = "SELECT * FROM $table WHERE id=? AND uid={$_SESSION['id']}";
+		$result = $db->prepare($sql);
+		$result->execute(array($_GET['id']));
+		$post = $result->fetch(PDO::FETCH_ASSOC);
+		$filepath = '../'.$post['pic'];
+		if(unlink($filepath)){
+			$sql = "UPDATE $table SET pic='', updated=NOW() WHERE id=? AND uid={$_SESSION['id']}";
+			$result = $db->prepare($sql);
+			$res = $result->execute(array($_GET['id']));
+			if($res){
+				header("location: $redirect");
+			}
 		}
 	}
 }
