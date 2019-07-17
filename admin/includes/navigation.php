@@ -88,6 +88,14 @@
                 <li>
                     <a href="comments.php"><i class="fa fa-table fa-fw"></i> Comments</a>
                 </li>
+                <?php 
+                    $sql = "SELECT * FROM users WHERE id=?";
+                    $result = $db->prepare($sql);
+                    $result->execute(array($_SESSION['id']));
+                    $user = $result->fetch(PDO::FETCH_ASSOC); 
+
+                    if($user['role'] == 'administrator'){
+                ?>
                 <li>
                     <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Users<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -127,6 +135,7 @@
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
+                <?php } ?>
             </ul>
         </div>
         <!-- /.sidebar-collapse -->

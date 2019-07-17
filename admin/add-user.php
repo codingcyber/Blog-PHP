@@ -1,6 +1,7 @@
 <?php 
 require_once('../includes/connect.php');
 include('includes/check-login.php');
+include('includes/check-admin.php');
 if(isset($_POST) & !empty($_POST)){
     // PHP Form Validations
     if(empty($_POST['username'])){ $errors[] = 'User Name field is Required';}else{
