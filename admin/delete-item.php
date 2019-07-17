@@ -2,6 +2,8 @@
 // I'll use this file to delete all the files and redirect to correct view-page.php file
 require_once('../includes/connect.php');
 include('includes/check-login.php');
+include('includes/check-admin.php');
+include('includes/check-subscriber.php');
 switch ($_GET['item']) {
 	case 'category':
 		$table = 'categories';

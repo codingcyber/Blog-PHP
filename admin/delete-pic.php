@@ -1,6 +1,8 @@
 <?php
 require_once('../includes/connect.php');
 include('includes/check-login.php');
+include('includes/check-admin.php');
+include('includes/check-subscriber.php');
 if(isset($_GET) & !empty($_GET)){
 	$id = $_GET['id'];
 	switch ($_GET['type']) {

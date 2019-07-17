@@ -2,6 +2,8 @@
 require_once('../includes/connect.php');
 include('includes/check-login.php');
 include('includes/check-admin.php');
+//check-subscriber.php is not required while check-admin in loaded
+include('includes/check-subscriber.php');
 if(isset($_POST) & !empty($_POST)){
     // PHP Form Validations
     if(empty($_POST['username'])){ $errors[] = 'User Name field is Required';}else{
