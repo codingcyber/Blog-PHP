@@ -94,13 +94,29 @@ $token = md5(uniqid(rand(), TRUE));
 $_SESSION['csrf_token'] = $token;
 $_SESSION['csrf_token_time'] = time();
 
-include('includes/header.php');
-include('includes/navigation.php'); 
-
-$sql = "SELECT * FROM posts WHERE id=?";
+$sql = "SELECT * FROM users WHERE id=?";
 $result = $db->prepare($sql);
-$result->execute(array($_GET['id']));
-$post = $result->fetch(PDO::FETCH_ASSOC);
+$result->execute(array($_SESSION['id']));
+$user = $result->fetch(PDO::FETCH_ASSOC); 
+
+if($user['role'] == 'administrator'){
+    $sql = "SELECT * FROM posts WHERE id=?";
+    $result = $db->prepare($sql);
+    $result->execute(array($_GET['id']));
+    $post = $result->fetch(PDO::FETCH_ASSOC);       
+}elseif($user['role'] == 'editor'){
+    $sql = "SELECT * FROM posts WHERE id=? AND uid={$_SESSION['id']}";
+    $result = $db->prepare($sql);
+    $result->execute(array($_GET['id']));
+    $postcount = $result->rowCount();
+    $post = $result->fetch(PDO::FETCH_ASSOC);
+    if($postcount <= 0){
+        header("location: view-articles.php");
+    }
+} 
+
+include('includes/header.php');
+include('includes/navigation.php');
 ?>
 <div id="page-wrapper" style="min-height: 345px;">
     <div class="row">
