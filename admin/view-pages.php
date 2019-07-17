@@ -36,9 +36,20 @@ include('includes/navigation.php');
                             </thead>
                             <tbody>
                                 <?php 
-                                    $sql = "SELECT * FROM pages";
+                                    $sql = "SELECT * FROM users WHERE id=?";
                                     $result = $db->prepare($sql);
-                                    $result->execute();
+                                    $result->execute(array($_SESSION['id']));
+                                    $user = $result->fetch(PDO::FETCH_ASSOC); 
+
+                                    if($user['role'] == 'administrator'){
+                                        $sql = "SELECT * FROM pages";
+                                        $result = $db->prepare($sql);
+                                        $result->execute();
+                                    }elseif($user['role'] == 'editor'){
+                                        $sql = "SELECT * FROM pages WHERE uid=?";
+                                        $result = $db->prepare($sql);
+                                        $result->execute(array($_SESSION['id'])); 
+                                    }
                                     $res = $result->fetchAll(PDO::FETCH_ASSOC);
                                     foreach ($res as $page) {
                                     // TODO : Only user with administrator privillages or user who created the page can only edit or delete post

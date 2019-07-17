@@ -36,9 +36,20 @@ include('includes/navigation.php');
                             </thead>
                             <tbody>
                                 <?php 
-                                    $sql = "SELECT * FROM posts";
+                                    $sql = "SELECT * FROM users WHERE id=?";
                                     $result = $db->prepare($sql);
-                                    $result->execute();
+                                    $result->execute(array($_SESSION['id']));
+                                    $user = $result->fetch(PDO::FETCH_ASSOC); 
+
+                                    if($user['role'] == 'administrator'){
+                                        $sql = "SELECT * FROM posts";
+                                        $result = $db->prepare($sql);
+                                        $result->execute();
+                                    }elseif($user['role'] == 'editor'){
+                                        $sql = "SELECT * FROM posts WHERE uid=?";
+                                        $result = $db->prepare($sql);
+                                        $result->execute(array($_SESSION['id'])); 
+                                    }
                                     $res = $result->fetchAll(PDO::FETCH_ASSOC);
                                     foreach ($res as $post) {
                                     // TODO : Only user with administrator privillages or user who created the article can only edit or delete post
@@ -47,11 +58,16 @@ include('includes/navigation.php');
                                     $catresult = $db->prepare($catsql);
                                     $catresult->execute(array($post['id']));
                                     $categories = $catresult->fetchAll(PDO::FETCH_ASSOC);
+
+                                    $usersql = "SELECT * FROM users WHERE id=?";
+                                    $userresult = $db->prepare($usersql);
+                                    $userresult->execute(array($post['uid']));
+                                    $user = $userresult->fetch(PDO::FETCH_ASSOC);
                                 ?>
                                 <tr>
                                     <td><?php echo $post['id']; ?></td>
                                     <td><?php echo $post['title']; ?></td>
-                                    <td><?php echo $post['uid']; ?></td>
+                                    <td><a href="edit-user.php?id=<?php echo $user['id']; ?>"><?php echo $user['username']; ?></a></td>
                                     <td><?php foreach ($categories as $cat) {echo $cat['title'].", ";} ?></td>
                                     <td><?php if(isset($post['pic']) & !empty($post['pic'])){ echo "Yes"; }else{ echo "No"; } ?></td>
                                     <td><?php echo $post['updated']; ?></td>
