@@ -31,7 +31,7 @@ if(isset($_POST) & !empty($_POST)){
         $result = $db->prepare($sql);
         $values = array(':uid'      => $_POST['uid'],
                         ':pid'    => $_POST['pid'],
-                        ':comment'  => $_POST['comment']
+                        ':comment'  => strip_tags($_POST['comment'])
                         );
         $res = $result->execute($values) or die(print_r($result->errorInfo(), true));
         if($res){

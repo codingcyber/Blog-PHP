@@ -109,7 +109,7 @@ $user = $userresult->fetch(PDO::FETCH_ASSOC);
       <?php }else{ echo "<h3>You Should be LoggedIn to Post Comments.</h3><hr>"; }
             }else{ echo "<h3>Comments are Disabled.</h3><hr>"; } ?>
       <?php
-          $sql = "SELECT comments.comment, users.username, users.fname, users.lname, users.role FROM comments INNER JOIN users ON comments.uid=users.id WHERE comments.pid=? AND comments.status='approved'";
+          $sql = "SELECT comments.comment, users.username, users.fname, users.lname, users.role FROM comments INNER JOIN users ON comments.uid=users.id WHERE comments.pid=? AND comments.status='approved' ORDER BY comments.created DESC";
           $result = $db->prepare($sql);
           $result->execute(array($_GET['id'])) or die(print_r($result->errorInfo(), true));
           $comments = $result->fetchAll(PDO::FETCH_ASSOC);
