@@ -22,14 +22,21 @@ include('includes/navigation.php');
                             <i class="fa fa-comments fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">26</div>
+                            <?php 
+                                $sql = "SELECT * FROM comments";
+                                $result = $db->prepare($sql);
+                                $result->execute();
+                                $comments = $result->fetchAll(PDO::FETCH_ASSOC); 
+                                $commentscount = $result->rowCount();
+                             ?>
+                            <div class="huge"><?php echo $commentscount; ?></div>
                             <div>Total Comments!</div>
                         </div>
                     </div>
                 </div>
                 <a href="#">
                     <div class="panel-footer">
-                        <span class="pull-left">View Comments</span>
+                        <span class="pull-left"><a href="comments.php">View Comments</a></span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
@@ -44,14 +51,20 @@ include('includes/navigation.php');
                             <i class="fa fa-tasks fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">12</div>
+                            <?php 
+                                $sql = "SELECT * FROM posts WHERE status='published'";
+                                $result = $db->prepare($sql);
+                                $result->execute(); 
+                                $publishedcount = $result->rowCount();
+                             ?>
+                            <div class="huge"><?php echo $publishedcount; ?></div>
                             <div>Published Articles!</div>
                         </div>
                     </div>
                 </div>
                 <a href="#">
                     <div class="panel-footer">
-                        <span class="pull-left">View Published Articles</span>
+                        <span class="pull-left"><a href="view-articles.php">View Published Articles</a></span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
@@ -66,14 +79,20 @@ include('includes/navigation.php');
                             <i class="fa fa-shopping-cart fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">124</div>
+                            <?php 
+                                $sql = "SELECT * FROM posts WHERE status='draft'";
+                                $result = $db->prepare($sql);
+                                $result->execute(); 
+                                $draftcount = $result->rowCount();
+                             ?>
+                            <div class="huge"><?php echo $draftcount; ?></div>
                             <div>Draft Articles!</div>
                         </div>
                     </div>
                 </div>
                 <a href="#">
                     <div class="panel-footer">
-                        <span class="pull-left">View Draft Articles</span>
+                        <span class="pull-left"><a href="view-articles.php">View Draft Articles</a></span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
@@ -104,54 +123,24 @@ include('includes/navigation.php');
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php 
+                                            $sql = "SELECT * FROM posts";
+                                            $result = $db->prepare($sql);
+                                            $result->execute(); 
+                                            $posts = $result->fetchAll(PDO::FETCH_ASSOC);
+                                            foreach ($posts as $post) {
+                                                $usersql = "SELECT * FROM users WHERE id=?";
+                                                $userresult = $db->prepare($usersql);
+                                                $userresult->execute(array($post['uid']));
+                                                $user = $userresult->fetch(PDO::FETCH_ASSOC);
+                                         ?>
                                         <tr>
-                                            <td>1</td>
-                                            <td>Article Title</td>
-                                            <td>Author Name</td>
-                                            <td>Published</td>
+                                            <td><?php echo $post['id']; ?></td>
+                                            <td><?php echo $post['title']; ?></td>
+                                            <td><?php echo $user['username']; ?></td>
+                                            <td><?php echo $post['status']; ?></td>
                                         </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Article Title</td>
-                                            <td>Author Name</td>
-                                            <td>Published</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Article Title</td>
-                                            <td>Author Name</td>
-                                            <td>Published</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>Article Title</td>
-                                            <td>Author Name</td>
-                                            <td>Published</td>
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td>Article Title</td>
-                                            <td>Author Name</td>
-                                            <td>Published</td>
-                                        </tr>
-                                        <tr>
-                                            <td>6</td>
-                                            <td>Article Title</td>
-                                            <td>Author Name</td>
-                                            <td>Published</td>
-                                        </tr>
-                                        <tr>
-                                            <td>7</td>
-                                            <td>Article Title</td>
-                                            <td>Author Name</td>
-                                            <td>Published</td>
-                                        </tr>
-                                        <tr>
-                                            <td>8</td>
-                                            <td>Article Title</td>
-                                            <td>Author Name</td>
-                                            <td>Published</td>
-                                        </tr>
+                                    <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -175,39 +164,18 @@ include('includes/navigation.php');
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="list-group">
+                        <?php 
+                            foreach ($comments as $comment) {
+                         ?>
                         <a href="#" class="list-group-item">
-                            <i class="fa fa-comment fa-fw"></i> New Comment
-                            <span class="pull-right text-muted small"><em>4 minutes ago</em>
+                            <i class="fa fa-comment fa-fw"></i> <?php echo substr($comment['comment'],0,10); ?>
+                            <span class="pull-right text-muted small"><em><?php echo $comment['created']; ?></em>
                             </span>
                         </a>
-                        <a href="#" class="list-group-item">
-                            <i class="fa fa-comment fa-fw"></i> New Comment
-                            <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                            </span>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <i class="fa fa-comment fa-fw"></i> New Comment
-                            <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                            </span>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <i class="fa fa-comment fa-fw"></i> New Comment
-                            <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                            </span>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <i class="fa fa-comment fa-fw"></i> New Comment
-                            <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                            </span>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <i class="fa fa-comment fa-fw"></i> New Comment
-                            <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                            </span>
-                        </a>
+                    <?php } ?>
                     </div>
                     <!-- /.list-group -->
-                    <a href="#" class="btn btn-default btn-block">View All Comments</a>
+                    <a href="comments.php" class="btn btn-default btn-block">View All Comments</a>
                 </div>
                 <!-- /.panel-body -->
             </div>
