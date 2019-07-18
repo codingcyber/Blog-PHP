@@ -3,10 +3,36 @@ session_start();
 require_once('includes/connect.php');
 include('includes/header.php');
 include('includes/navigation.php'); 
-$sql = "SELECT * FROM posts ORDER BY created DESC";
+
+// get number of per page results from settings table
+$rppsql = "SELECT * FROM settings WHERE name='resultsperpage'";
+$rppresult = $db->prepare($rppsql);
+$rppresult->execute();
+$rpp = $rppresult->fetch(PDO::FETCH_ASSOC);
+$perpage = $rpp['value'];
+
+if(isset($_GET['page']) & !empty($_GET['page'])){
+  $curpage = $_GET['page'];
+}else{
+  $curpage = 1;
+}
+// get the number of total posts from posts table
+$sql = "SELECT * FROM posts";
+$result = $db->prepare($sql);
+$result->execute();
+$totalres = $result->rowCount();
+// create startpage, nextpage, endpage variables with values
+$endpage = ceil($totalres/$perpage);
+$startpage = 1;
+$nextpage = $curpage + 1;
+$previouspage = $curpage - 1;
+$start = ($curpage * $perpage) - $perpage;
+// fetch the results
+$sql = "SELECT * FROM posts ORDER BY created DESC LIMIT $start, $perpage";
 $result = $db->prepare($sql);
 $result->execute();
 $posts = $result->fetchAll(PDO::FETCH_ASSOC);
+// add the pagination links
 ?>
 <!-- Page Content -->
 <div class="container">
@@ -56,12 +82,16 @@ $posts = $result->fetchAll(PDO::FETCH_ASSOC);
 
       <!-- Pagination -->
       <ul class="pagination justify-content-center mb-4">
+        <?php if($curpage != $startpage){ ?>
         <li class="page-item">
-          <a class="page-link" href="#">&larr; Older</a>
+          <a class="page-link" href="?page=<?php echo $startpage; ?>">&larr; Older</a>
         </li>
-        <li class="page-item disabled">
-          <a class="page-link" href="#">Newer &rarr;</a>
+        <?php } ?>
+        <?php if($curpage != $endpage){ ?>
+        <li class="page-item">
+          <a class="page-link" href="?page=<?php echo $endpage; ?>">Newer &rarr;</a>
         </li>
+        <?php } ?>
       </ul>
 
     </div>
