@@ -3,7 +3,7 @@ session_start();
 require_once('includes/connect.php');
 include('includes/header.php');
 include('includes/navigation.php'); 
-$sql = "SELECT * FROM posts";
+$sql = "SELECT * FROM posts ORDER BY created DESC";
 $result = $db->prepare($sql);
 $result->execute();
 $posts = $result->fetchAll(PDO::FETCH_ASSOC);

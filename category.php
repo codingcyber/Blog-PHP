@@ -3,7 +3,7 @@ session_start();
 require_once('includes/connect.php');
 include('includes/header.php');
 include('includes/navigation.php');
-$sql = "SELECT * FROM post_categories WHERE cid=?";
+$sql = "SELECT * FROM post_categories WHERE cid=? ORDER BY created DESC";
 $result = $db->prepare($sql);
 $result->execute(array($_GET['id']));
 $postcount = $result->rowCount();

@@ -119,6 +119,8 @@ if($user['role'] == 'administrator'){
 include('includes/header.php');
 include('includes/navigation.php');
 ?>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+  <script>tinymce.init({selector:'textarea'});</script>
 <div id="page-wrapper" style="min-height: 345px;">
     <div class="row">
         <div class="col-lg-12">
