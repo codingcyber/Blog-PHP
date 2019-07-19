@@ -49,7 +49,7 @@ $posts = $result->fetchAll(PDO::FETCH_ASSOC);
         <!-- Blog Post -->
         <div class="card mb-4">
           <?php if(isset($post['pic']) & !empty($post['pic'])){ ?>
-              <img class="card-img-top" src="<?php echo $post['pic']; ?>" alt="Card image cap">
+              <img class="card-img-top" src="http://localhost/Blog-PHP/<?php echo $post['pic']; ?>" alt="Card image cap">
           <?php }else{ ?>
               <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
           <?php } ?>

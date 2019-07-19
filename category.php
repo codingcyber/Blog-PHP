@@ -17,9 +17,9 @@ if(isset($_GET['page']) & !empty($_GET['page'])){
   $curpage = 1;
 }
 // get the number of total posts from posts table
-$sql = "SELECT * FROM post_categories INNER JOIN posts ON post_categories.pid=posts.id WHERE post_categories.cid=?";
+$sql = "SELECT * FROM post_categories INNER JOIN posts ON post_categories.pid=posts.id INNER JOIN categories ON post_categories.cid=categories.id WHERE categories.slug=?";
 $result = $db->prepare($sql);
-$result->execute(array($_GET['id']));
+$result->execute(array($_GET['url']));
 $totalres = $result->rowCount();
 // create startpage, nextpage, endpage variables with values
 $endpage = ceil($totalres/$perpage);
@@ -29,9 +29,9 @@ $previouspage = $curpage - 1;
 $start = ($curpage * $perpage) - $perpage;
 
 // fetch the results
-$sql = "SELECT * FROM post_categories INNER JOIN posts ON post_categories.pid=posts.id WHERE post_categories.cid=? ORDER BY posts.created DESC LIMIT $start, $perpage";
+$sql = "SELECT posts.title, posts.pic, posts.content, posts.slug, posts.id, posts.created, posts.uid FROM post_categories INNER JOIN posts ON post_categories.pid=posts.id INNER JOIN categories ON post_categories.cid=categories.id WHERE categories.slug=? ORDER BY posts.created DESC LIMIT $start, $perpage";
 $result = $db->prepare($sql);
-$result->execute(array($_GET['id']));
+$result->execute(array($_GET['url']));
 $postcount = $result->rowCount();
 $posts = $result->fetchAll(PDO::FETCH_ASSOC);
  ?>
@@ -43,9 +43,9 @@ $posts = $result->fetchAll(PDO::FETCH_ASSOC);
     <!-- Blog Entries Column -->
     <div class="col-md-8">
       <?php
-          $catsql = "SELECT * FROM categories WHERE id=?";
+          $catsql = "SELECT * FROM categories WHERE slug=?";
           $catresult = $db->prepare($catsql);
-          $catresult->execute(array($_GET['id']));
+          $catresult->execute(array($_GET['url']));
           $catres = $catresult->fetch(PDO::FETCH_ASSOC);
       ?>
       <h1 class="my-4">Category : <?php echo $catres['title']; ?></h1>
@@ -62,7 +62,7 @@ $posts = $result->fetchAll(PDO::FETCH_ASSOC);
       <!-- Blog Post -->
       <div class="card mb-4">
         <?php if(isset($post['pic']) & !empty($post['pic'])){ ?>
-            <img class="card-img-top" src="<?php echo $post['pic']; ?>" alt="Card image cap">
+            <img class="card-img-top" src="http://localhost/Blog-PHP/<?php echo $post['pic']; ?>" alt="Card image cap">
         <?php }else{ ?>
             <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
         <?php } ?>
@@ -100,12 +100,22 @@ $posts = $result->fetchAll(PDO::FETCH_ASSOC);
       <ul class="pagination justify-content-center mb-4">
         <?php if($curpage != $startpage){ ?>
         <li class="page-item">
-          <a class="page-link" href="?id=<?php echo $_GET['id']; ?>&page=<?php echo $startpage; ?>">&larr; Older</a>
+          <a class="page-link" href="http://localhost/Blog-PHP/category/<?php echo $_GET['url']; ?>/<?php echo $startpage; ?>">&larr; Older</a>
+        </li>
+        <?php } ?>
+        <?php if($curpage >= 2){ ?>
+        <li class="page-item">
+          <a class="page-link" href="http://localhost/Blog-PHP/category/<?php echo $_GET['url']; ?>/<?php echo $previouspage; ?>"><?php echo $previouspage; ?></a>
+        </li>
+        <?php } ?>
+        <?php if($curpage != $endpage ){ ?>
+        <li class="page-item">
+          <a class="page-link" href="http://localhost/Blog-PHP/category/<?php echo $_GET['url']; ?>/<?php echo $nextpage; ?>"><?php echo $nextpage; ?></a>
         </li>
         <?php } ?>
         <?php if($curpage != $endpage){ ?>
         <li class="page-item">
-          <a class="page-link" href="?id=<?php echo $_GET['id']; ?>&page=<?php echo $endpage; ?>">Newer &rarr;</a>
+          <a class="page-link" href="http://localhost/Blog-PHP/category/<?php echo $_GET['url']; ?>/<?php echo $endpage; ?>">Newer &rarr;</a>
         </li>
         <?php } ?>
       </ul>

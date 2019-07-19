@@ -11,10 +11,10 @@
     <title>Blog Home Page</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://localhost/Blog-PHP/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/blog-home.css" rel="stylesheet">
+    <link href="http://localhost/Blog-PHP/css/blog-home.css" rel="stylesheet">
 
   </head>
 
