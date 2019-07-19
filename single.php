@@ -4,9 +4,9 @@ require_once('includes/connect.php');
 include('includes/header.php');
 include('comment.php');
 include('includes/navigation.php'); 
-$sql = "SELECT * FROM posts WHERE id=?";
+$sql = "SELECT * FROM posts WHERE slug=?";
 $result = $db->prepare($sql);
-$result->execute(array($_GET['id']));
+$result->execute(array($_GET['url']));
 $post = $result->fetch(PDO::FETCH_ASSOC);
 
 $usersql = "SELECT * FROM users WHERE id=?";
@@ -111,7 +111,7 @@ $user = $userresult->fetch(PDO::FETCH_ASSOC);
       <?php
           $sql = "SELECT comments.comment, users.username, users.fname, users.lname, users.role FROM comments INNER JOIN users ON comments.uid=users.id WHERE comments.pid=? AND comments.status='approved' ORDER BY comments.created DESC";
           $result = $db->prepare($sql);
-          $result->execute(array($_GET['id'])) or die(print_r($result->errorInfo(), true));
+          $result->execute(array($post['id'])) or die(print_r($result->errorInfo(), true));
           $comments = $result->fetchAll(PDO::FETCH_ASSOC);
           foreach($comments as $comment){
       ?>

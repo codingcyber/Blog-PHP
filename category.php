@@ -78,7 +78,7 @@ $posts = $result->fetchAll(PDO::FETCH_ASSOC);
           ?>
           <a href="#" class="btn btn-secondary"><?php echo $commentcount; ?> Comments</a>
           <?php } ?>
-          <a href="single.php?id=<?php echo $post['id']; ?>" class="btn btn-primary">Read More &rarr;</a>
+          <a href="<?php echo $post['slug']; ?>" class="btn btn-primary">Read More &rarr;</a>
         </div>
         <div class="card-footer text-muted">
           Posted on <?php echo $post['created']; ?> by
