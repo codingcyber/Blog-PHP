@@ -3,11 +3,37 @@ session_start();
 require_once('includes/connect.php');
 include('includes/header.php');
 include('includes/navigation.php');
-$sql = "SELECT * FROM post_categories WHERE cid=? ORDER BY created DESC";
+
+// get number of per page results from settings table
+$rppsql = "SELECT * FROM settings WHERE name='resultsperpage'";
+$rppresult = $db->prepare($rppsql);
+$rppresult->execute();
+$rpp = $rppresult->fetch(PDO::FETCH_ASSOC);
+$perpage = $rpp['value'];
+
+if(isset($_GET['page']) & !empty($_GET['page'])){
+  $curpage = $_GET['page'];
+}else{
+  $curpage = 1;
+}
+// get the number of total posts from posts table
+$sql = "SELECT * FROM post_categories INNER JOIN posts ON post_categories.pid=posts.id WHERE post_categories.cid=?";
+$result = $db->prepare($sql);
+$result->execute(array($_GET['id']));
+$totalres = $result->rowCount();
+// create startpage, nextpage, endpage variables with values
+$endpage = ceil($totalres/$perpage);
+$startpage = 1;
+$nextpage = $curpage + 1;
+$previouspage = $curpage - 1;
+$start = ($curpage * $perpage) - $perpage;
+
+// fetch the results
+$sql = "SELECT * FROM post_categories INNER JOIN posts ON post_categories.pid=posts.id WHERE post_categories.cid=? ORDER BY posts.created DESC LIMIT $start, $perpage";
 $result = $db->prepare($sql);
 $result->execute(array($_GET['id']));
 $postcount = $result->rowCount();
-$postids = $result->fetchAll(PDO::FETCH_ASSOC);
+$posts = $result->fetchAll(PDO::FETCH_ASSOC);
  ?>
 <!-- Page Content -->
 <div class="container">
@@ -26,11 +52,11 @@ $postids = $result->fetchAll(PDO::FETCH_ASSOC);
       
       <?php
         if($postcount >= 1){
-          foreach ($postids as $postid) {
-            $postsql = "SELECT * FROM posts WHERE id=?";
-            $postresult = $db->prepare($postsql);
-            $postresult->execute(array($postid['id']));
-            $posts = $postresult->fetchAll(PDO::FETCH_ASSOC);
+          // foreach ($postids as $postid) {
+          //   $postsql = "SELECT * FROM posts WHERE id=?";
+          //   $postresult = $db->prepare($postsql);
+          //   $postresult->execute(array($postid['id']));
+          //   $posts = $postresult->fetchAll(PDO::FETCH_ASSOC);
             foreach ($posts as $post) {
       ?>
       <!-- Blog Post -->
@@ -65,82 +91,28 @@ $postids = $result->fetchAll(PDO::FETCH_ASSOC);
           <a href="user-posts.php?id=<?php echo $user['id']; ?>"><?php if((isset($user['fname']) || isset($user['lname'])) & (!empty($user['fname']) || !empty($user['lname']))) {echo $user['fname'] . " " . $user['lname']; }else{echo $user['username']; } ?></a>
         </div>
       </div>
-    <?php } } }else{
+    <?php //} 
+      } }else{
       echo "<h3>No Articles for this category</h3>";
     } ?>
 
-      <!-- Pagination -->
+    <!-- Pagination -->
       <ul class="pagination justify-content-center mb-4">
+        <?php if($curpage != $startpage){ ?>
         <li class="page-item">
-          <a class="page-link" href="#">&larr; Older</a>
+          <a class="page-link" href="?id=<?php echo $_GET['id']; ?>&page=<?php echo $startpage; ?>">&larr; Older</a>
         </li>
-        <li class="page-item disabled">
-          <a class="page-link" href="#">Newer &rarr;</a>
+        <?php } ?>
+        <?php if($curpage != $endpage){ ?>
+        <li class="page-item">
+          <a class="page-link" href="?id=<?php echo $_GET['id']; ?>&page=<?php echo $endpage; ?>">Newer &rarr;</a>
         </li>
+        <?php } ?>
       </ul>
 
     </div>
 
-    <!-- Sidebar Widgets Column -->
-    <div class="col-md-4">
-
-      <!-- Search Widget -->
-      <div class="card my-4">
-        <h5 class="card-header">Search</h5>
-        <div class="card-body">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for...">
-            <span class="input-group-btn">
-              <button class="btn btn-secondary" type="button">Go!</button>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Categories Widget -->
-      <div class="card my-4">
-        <h5 class="card-header">Categories</h5>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-lg-6">
-              <ul class="list-unstyled mb-0">
-                <li>
-                  <a href="#">Web Design</a>
-                </li>
-                <li>
-                  <a href="#">HTML</a>
-                </li>
-                <li>
-                  <a href="#">Freebies</a>
-                </li>
-              </ul>
-            </div>
-            <div class="col-lg-6">
-              <ul class="list-unstyled mb-0">
-                <li>
-                  <a href="#">JavaScript</a>
-                </li>
-                <li>
-                  <a href="#">CSS</a>
-                </li>
-                <li>
-                  <a href="#">Tutorials</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Side Widget -->
-      <div class="card my-4">
-        <h5 class="card-header">Side Widget</h5>
-        <div class="card-body">
-          You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
-        </div>
-      </div>
-
-    </div>
+    <?php include('includes/sidebar.php'); ?>
 
   </div>
   <!-- /.row -->
