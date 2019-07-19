@@ -119,8 +119,8 @@ if($user['role'] == 'administrator'){
 include('includes/header.php');
 include('includes/navigation.php');
 ?>
-<!-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
-<script>tinymce.init({selector:'textarea'});</script> -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+<script>tinymce.init({selector:'textarea'});</script>
 <div id="page-wrapper" style="min-height: 345px;">
     <div class="row">
         <div class="col-lg-12">
@@ -196,12 +196,12 @@ include('includes/navigation.php');
                                             ?>
                                             <label>Categories</label>
                                             <select multiple="" name="categories[]" class="form-control">
-    <?php
-        foreach ($res as $cat) {
-            if(in_array($cat['id'], array_column($categories, 'cid'))){$selected = "selected"; }else{ $selected = ""; }
-            echo "<option value='".$cat['id']."'". $selected .">".$cat['title']."</option>";
-        }
-    ?>
+                                            <?php
+                                                foreach ($res as $cat) {
+                                                    if(in_array($cat['id'], array_column($categories, 'cid'))){$selected = "selected"; }else{ $selected = ""; }
+                                                    echo "<option value='".$cat['id']."'". $selected .">".$cat['title']."</option>";
+                                                }
+                                            ?>
                                             </select>
                                         </div>
                                     </div>
