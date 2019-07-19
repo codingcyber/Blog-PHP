@@ -3,3 +3,4 @@ RewriteEngine on
 RewriteRule ^([-\w]+)$ single.php?url=$1 [NC,L]
 RewriteRule ^category/([-\w]+)/(\d+)$ category.php?url=$1&page=$2 [NC,L]
 RewriteRule ^category/([-\w]+)$ category.php?url=$1 [NC,L]
+RewriteRule ^user/([-\w]+)$ user-posts.php?id=$1 [NC,L]

@@ -78,7 +78,7 @@ $posts = $result->fetchAll(PDO::FETCH_ASSOC);
           ?>
           <a href="#" class="btn btn-secondary"><?php echo $commentcount; ?> Comments</a>
           <?php } ?>
-          <a href="<?php echo $post['slug']; ?>" class="btn btn-primary">Read More &rarr;</a>
+          <a href="http://localhost/Blog-PHP/<?php echo $post['slug']; ?>" class="btn btn-primary">Read More &rarr;</a>
         </div>
         <div class="card-footer text-muted">
           Posted on <?php echo $post['created']; ?> by
@@ -88,7 +88,7 @@ $posts = $result->fetchAll(PDO::FETCH_ASSOC);
             $userresult->execute(array($post['uid']));
             $user = $userresult->fetch(PDO::FETCH_ASSOC);
           ?>
-          <a href="user-posts.php?id=<?php echo $user['id']; ?>"><?php if((isset($user['fname']) || isset($user['lname'])) & (!empty($user['fname']) || !empty($user['lname']))) {echo $user['fname'] . " " . $user['lname']; }else{echo $user['username']; } ?></a>
+          <a href="http://localhost/Blog-PHP/user/<?php echo $user['username']; ?>"><?php if((isset($user['fname']) || isset($user['lname'])) & (!empty($user['fname']) || !empty($user['lname']))) {echo $user['fname'] . " " . $user['lname']; }else{echo $user['username']; } ?></a>
         </div>
       </div>
     <?php //} 
