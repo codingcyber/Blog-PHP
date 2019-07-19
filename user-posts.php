@@ -12,11 +12,13 @@ if($usercount < 1){
 }
 $user = $userresult->fetch(PDO::FETCH_ASSOC);
 
-$sql = "SELECT * FROM posts WHERE uid=?";
+$sql = "SELECT * FROM posts WHERE uid=? AND status='published'";
 $result = $db->prepare($sql);
 $result->execute(array($user['id']));
 $postcount = $result->rowCount();
 $posts = $result->fetchAll(PDO::FETCH_ASSOC);
+
+// TODO : Add Pagination
 ?>
 <!-- Page Content -->
 <div class="container">

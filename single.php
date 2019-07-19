@@ -4,7 +4,7 @@ require_once('includes/connect.php');
 include('includes/header.php');
 include('comment.php');
 include('includes/navigation.php'); 
-$sql = "SELECT * FROM posts WHERE slug=?";
+$sql = "SELECT * FROM posts WHERE slug=? AND status='published'";
 $result = $db->prepare($sql);
 $result->execute(array($_GET['url']));
 $post = $result->fetch(PDO::FETCH_ASSOC);

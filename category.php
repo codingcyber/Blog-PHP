@@ -17,7 +17,7 @@ if(isset($_GET['page']) & !empty($_GET['page'])){
   $curpage = 1;
 }
 // get the number of total posts from posts table
-$sql = "SELECT * FROM post_categories INNER JOIN posts ON post_categories.pid=posts.id INNER JOIN categories ON post_categories.cid=categories.id WHERE categories.slug=?";
+$sql = "SELECT * FROM post_categories INNER JOIN posts ON post_categories.pid=posts.id INNER JOIN categories ON post_categories.cid=categories.id WHERE categories.slug=? AND posts.status='published'";
 $result = $db->prepare($sql);
 $result->execute(array($_GET['url']));
 $totalres = $result->rowCount();
@@ -29,7 +29,7 @@ $previouspage = $curpage - 1;
 $start = ($curpage * $perpage) - $perpage;
 
 // fetch the results
-$sql = "SELECT posts.title, posts.pic, posts.content, posts.slug, posts.id, posts.created, posts.uid FROM post_categories INNER JOIN posts ON post_categories.pid=posts.id INNER JOIN categories ON post_categories.cid=categories.id WHERE categories.slug=? ORDER BY posts.created DESC LIMIT $start, $perpage";
+$sql = "SELECT posts.title, posts.pic, posts.content, posts.slug, posts.id, posts.created, posts.uid FROM post_categories INNER JOIN posts ON post_categories.pid=posts.id INNER JOIN categories ON post_categories.cid=categories.id WHERE categories.slug=? AND posts.status='published' ORDER BY posts.created DESC LIMIT $start, $perpage";
 $result = $db->prepare($sql);
 $result->execute(array($_GET['url']));
 $postcount = $result->rowCount();

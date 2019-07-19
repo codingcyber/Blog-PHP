@@ -17,7 +17,7 @@ if(isset($_GET['page']) & !empty($_GET['page'])){
   $curpage = 1;
 }
 // get the number of total posts from posts table
-$sql = "SELECT * FROM posts";
+$sql = "SELECT * FROM posts WHERE status='published'";
 $result = $db->prepare($sql);
 $result->execute();
 $totalres = $result->rowCount();
@@ -28,7 +28,7 @@ $nextpage = $curpage + 1;
 $previouspage = $curpage - 1;
 $start = ($curpage * $perpage) - $perpage;
 // fetch the results
-$sql = "SELECT * FROM posts ORDER BY created DESC LIMIT $start, $perpage";
+$sql = "SELECT * FROM posts WHERE status='published' ORDER BY created DESC LIMIT $start, $perpage";
 $result = $db->prepare($sql);
 $result->execute();
 $posts = $result->fetchAll(PDO::FETCH_ASSOC);
