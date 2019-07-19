@@ -6,7 +6,16 @@ if(isset($_POST) & !empty($_POST)){
     // PHP Form Validations
     if(empty($_POST['title'])){$errors[] = "Title Field is Required";}
     if(empty($_POST['content'])){$errors[] = "Content Field is Required";}
-    if(empty($_POST['slug'])){$errors[] = "Slug Field is Required";}
+    if(empty($_POST['slug'])){$slug = $_POST['title']; }else{$slug = $_POST['slug'];}
+    // check slug is unique with db query
+    $slug = strtolower(str_replace(' ', '-', $slug));
+    $sql = "SELECT * FROM posts WHERE slug=?";
+    $result = $db->prepare($sql);
+    $result->execute(array($slug));
+    $count = $result->rowCount();
+    if($count == 1){
+        $errors[] = "Slug already exists in database";
+    }
     // CSRF Token Validation
     if(isset($_POST['csrf_token'])){
         if($_POST['csrf_token'] === $_SESSION['csrf_token']){
@@ -56,7 +65,7 @@ if(isset($_POST) & !empty($_POST)){
                         ':title'    => $_POST['title'],
                         ':content'  => $_POST['content'],
                         ':status'   => $_POST['status'],
-                        ':slug'     => $_POST['slug'],
+                        ':slug'     => $slug,
                         ':pic'      => $dbpath
                         );
         $res = $result->execute($values) or die(print_r($result->errorInfo(), true));
