@@ -5,9 +5,11 @@ include('includes/check-subscriber.php');
 if(isset($_POST) & !empty($_POST)){
     // PHP Form Validations
     if(empty($_POST['title'])){$errors[] = "Title Field is Required";}
-    if(empty($_POST['slug'])){$slug = $_POST['title']; }else{$slug = $_POST['slug'];}
+    if(empty($_FILES['pic']['name'])){$errors[] = "You Should Upload a File";}
+    if(empty($_POST['slug'])){$slug = trim($_POST['title']); }else{$slug = trim($_POST['slug']);}
     // check slug is unique with db query
-    $slug = strtolower(str_replace(' ', '-', $slug));
+    $search = array(" ", ",", ".", "_");
+    $slug = strtolower(str_replace($search, '-', $slug));
     $sql = "SELECT * FROM categories WHERE slug=?";
     $result = $db->prepare($sql);
     $result->execute(array($slug));

@@ -5,6 +5,21 @@ include('includes/check-subscriber.php');
 if(isset($_POST) & !empty($_POST)){
     // PHP Form Validations
     if(empty($_POST['title'])){$errors[] = "Title Field is Required";}
+    if(empty($_FILES['pic']['name'])){$errors[] = "You Should Upload a File";}
+    if(empty($_POST['slug'])){$slug = trim($_POST['title']); }else{$slug = trim($_POST['slug']);}
+    // check slug is unique with db query
+    $search = array(" ", ",", ".", "_");
+    $slug = strtolower(str_replace($search, '-', $slug));
+    $sql = "SELECT * FROM categories WHERE slug=:slug AND id <> :id";
+    $result = $db->prepare($sql) or die(print_r($result->errorInfo(), true));
+    $values = array(':slug'     => $_POST['slug'],
+                    ':id'       => $_POST['id']
+                    );
+    $result->execute($values);
+    $count = $result->rowCount();
+    if($count == 1){
+        $errors[] = "Slug already exists in database";
+    }
     // CSRF Token Validation
     if(isset($_POST['csrf_token'])){
         if($_POST['csrf_token'] === $_SESSION['csrf_token']){
