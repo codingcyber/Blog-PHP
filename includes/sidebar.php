@@ -59,7 +59,7 @@ $searchresult->execute();
 $widgetcount = $searchresult->rowCount();
 if($widgetcount == 1){
 
-  $postsql = "SELECT * FROM posts LIMIT 5";
+  $postsql = "SELECT * FROM posts WHERE status='published' LIMIT 5";
   $postresult = $db->prepare($postsql);
   $postresult->execute();
   $postres = $postresult->fetchAll(PDO::FETCH_ASSOC);
@@ -90,7 +90,7 @@ $searchresult->execute();
 $widgetcount = $searchresult->rowCount();
 if($widgetcount == 1){
 
-  $pagesql = "SELECT * FROM pages LIMIT 5";
+  $pagesql = "SELECT * FROM pages WHERE status='published' LIMIT 5";
   $pageresult = $db->prepare($pagesql);
   $pageresult->execute();
   $pageres = $pageresult->fetchAll(PDO::FETCH_ASSOC);
@@ -104,7 +104,7 @@ if($widgetcount == 1){
           <ul class="list-unstyled mb-0">
             <?php foreach ($pageres as $page) { ?>
             <li>
-              <a href="page.php?id=<?php echo $page['id']; ?>"><?php echo $page['title']; ?></a>
+              <a href="http://localhost/Blog-PHP/page/<?php echo $page['slug']; ?>"><?php echo $page['title']; ?></a>
             </li>
             <?php } ?>
           </ul>

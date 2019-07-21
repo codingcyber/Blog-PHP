@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">Blog Admin</a>
+        <a class="navbar-brand" href="dashboard.php">Blog Admin</a>
     </div>
     <!-- /.navbar-header -->
 
