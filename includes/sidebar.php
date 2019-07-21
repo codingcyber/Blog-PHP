@@ -42,7 +42,7 @@ if($widgetcount == 1){
           <ul class="list-unstyled mb-0">
             <?php foreach ($catres as $cat) { ?>
             <li>
-              <a href="category.php?id=<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?></a>
+              <a href="http://localhost/Blog-PHP/category/<?php echo $cat['title']; ?>"><?php echo $cat['title']; ?></a>
             </li>
             <?php } ?>
           </ul>
@@ -73,7 +73,7 @@ if($widgetcount == 1){
           <ul class="list-unstyled mb-0">
             <?php foreach ($postres as $post) { ?>
             <li>
-              <a href="single.php?id=<?php echo $post['id']; ?>"><?php echo $post['title']; ?></a>
+              <a href="http://localhost/Blog-PHP/<?php echo $post['slug']; ?>"><?php echo $post['title']; ?></a>
             </li>
             <?php } ?>
           </ul>

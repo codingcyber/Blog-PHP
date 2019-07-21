@@ -98,7 +98,7 @@ $user = $userresult->fetch(PDO::FETCH_ASSOC);
           <form method="post">
             <div class="form-group">
               <input type="hidden" name="uid" value="<?php echo $_SESSION['id']; ?>">
-              <input type="hidden" name="pid" value="<?php echo $_GET['id']; ?>">
+              <input type="hidden" name="pid" value="<?php echo $post['id']; ?>">
               <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
               <textarea class="form-control" name="comment" rows="3" required=""></textarea>
             </div>
