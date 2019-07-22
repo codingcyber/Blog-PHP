@@ -82,9 +82,6 @@ $_SESSION['csrf_token_time'] = time();
                             }
                             echo "</div>";
                         }
-                        echo "<pre>";
-                        print_r($_SESSION);
-                        echo "</pre>";
                     ?>
                     <?php
                         if(!empty($errors)){

@@ -154,7 +154,7 @@ foreach ($htmlres as $htmlwidget) {
       echo $user['role']; 
       ?>
       <br>
-      <a href="logout.php">Logout</a>
+      <a href="http://localhost/Blog-PHP/logout.php">Logout</a>
     </div>
   </div>
 <?php }else{ ?>

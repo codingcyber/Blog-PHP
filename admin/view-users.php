@@ -66,6 +66,10 @@ $start = ($curpage * $perpage) - $perpage;
                                     $result->execute();
                                     $res = $result->fetchAll(PDO::FETCH_ASSOC);
                                     foreach ($res as $user) {
+                                        $postsql = "SELECT * FROM posts WHERE uid=?";
+                                        $postresult = $db->prepare($postsql);
+                                        $postresult->execute(array($user['id']));
+                                        $postcount = $postresult->rowCount();
                                 ?>
                                 <tr>
                                     <td><?php echo $user['id']; ?></td>
@@ -73,7 +77,7 @@ $start = ($curpage * $perpage) - $perpage;
                                     <td><?php echo $user['fname'] . " " . $user['lname']; ?></td>
                                     <td><?php echo $user['email']; ?></td>
                                     <td><?php echo $user['role']; ?></td>
-                                    <td>Number of Articles</td>
+                                    <td><?php echo $postcount; ?></td>
                                     <td><a href="edit-user.php?id=<?php echo $user['id']; ?>">Edit</a> | <a href="delete-item.php?id=<?php echo $user['id']; ?>&item=user">Delete</a></td>
                                 </tr>
                                 <?php } ?>
